@@ -32,6 +32,16 @@ ordem eficientes.
 O programa principal será escrito em **Java 17**. O script Python fornecido
 pelo professor será usado somente para gerar cargas e verificar respostas.
 
+## Materiais fornecidos pelo professor
+
+- [Enunciado do projeto](projeto_final_estruturas_de_dados.pdf);
+- [Plano de ensino da disciplina](AL0334.pdf);
+- [Gerador de carga e oráculo](gen_workload_1.py).
+
+Os PDFs são a fonte dos requisitos. O gerador cria arquivos `.trace` e
+`.expected`; esses arquivos podem ser muito grandes e, por isso, não devem ser
+enviados ao Git.
+
 ## Entregas
 
 O trabalho inclui código, testes, estudo empírico, justificativa das decisões,
@@ -68,6 +78,17 @@ O projeto ainda está na fase de planejamento. A implementação deverá seguir:
 - branches de trabalho: `feature/<numero>-<descricao>`;
 - cada issue deve resultar em um pull request pequeno para `develop`;
 - o outro integrante revisa o pull request antes do merge.
+
+Para começar a trabalhar, aceite o convite do repositório, clone o projeto,
+troque para `develop` e crie uma branch da issue:
+
+```bash
+git clone https://github.com/bNDorneles/Estrutura-de-dados.git
+cd Estrutura-de-dados
+git switch develop
+git pull
+git switch -c feature/NUMERO-descricao
+```
 
 Responsáveis:
 
