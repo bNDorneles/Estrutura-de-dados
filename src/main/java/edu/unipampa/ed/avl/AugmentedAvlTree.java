@@ -130,6 +130,18 @@ public final class AugmentedAvlTree implements OrderedLongSet {
         return countLessOrEqual(upperInclusive) - rank(lowerInclusive);
     }
 
+    /**
+     * Valida os invariantes internos da árvore.
+     *
+     * <p>Tem visibilidade de pacote para uso por testes e diagnósticos do
+     * núcleo, sem expor nós na API pública.</p>
+     *
+     * @throws IllegalStateException quando encontra o primeiro nó inválido
+     */
+    void validateInvariants() {
+        validate(root, null, null);
+    }
+
     private static AvlNode insert(AvlNode node, long key) {
         if (node == null) {
             return new AvlNode(key);
@@ -193,5 +205,57 @@ public final class AugmentedAvlTree implements OrderedLongSet {
         }
 
         return result;
+    }
+
+    private static Validation validate(
+            AvlNode node, Long lowerExclusive, Long upperExclusive) {
+        if (node == null) {
+            return new Validation(0, 0L);
+        }
+
+        if ((lowerExclusive != null && node.key <= lowerExclusive)
+                || (upperExclusive != null && node.key >= upperExclusive)) {
+            throw new IllegalStateException(
+                    "Invariante de ordenação inválido na key=" + node.key);
+        }
+
+        Validation left = validate(node.left, lowerExclusive, node.key);
+        Validation right = validate(node.right, node.key, upperExclusive);
+
+        int expectedHeight = 1 + Math.max(left.height(), right.height());
+        if (node.height != expectedHeight) {
+            throw new IllegalStateException(
+                    "Invariante de altura inválido na key="
+                            + node.key
+                            + ": esperado="
+                            + expectedHeight
+                            + ", atual="
+                            + node.height);
+        }
+
+        long expectedSize = 1L + left.size() + right.size();
+        if (node.subtreeSize != expectedSize) {
+            throw new IllegalStateException(
+                    "Invariante de tamanho inválido na key="
+                            + node.key
+                            + ": esperado="
+                            + expectedSize
+                            + ", atual="
+                            + node.subtreeSize);
+        }
+
+        int balance = left.height() - right.height();
+        if (balance < -1 || balance > 1) {
+            throw new IllegalStateException(
+                    "Invariante de balanceamento inválido na key="
+                            + node.key
+                            + ": fator="
+                            + balance);
+        }
+
+        return new Validation(expectedHeight, expectedSize);
+    }
+
+    private record Validation(int height, long size) {
     }
 }
