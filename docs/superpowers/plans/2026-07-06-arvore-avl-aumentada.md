@@ -298,7 +298,7 @@ de 2.000 chaves. Comparar conteúdo, tamanho, rank e select com
 
 - [ ] **Step 2: Criar validação estrutural**
 
-Um método de acesso de pacote `validateInvariantsForTesting()` deve verificar
+Um método de acesso de pacote `validateInvariants()` deve verificar
 ordenação, altura, fator AVL e `subtreeSize`, lançando
 `IllegalStateException` com a chave do primeiro nó inválido.
 

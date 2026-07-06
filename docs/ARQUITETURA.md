@@ -104,6 +104,10 @@ remoção, consultas aumentadas e os cinco invariantes. Sequências aleatórias
 serão comparadas com `TreeSet<Long>`. Um trace pequeno também será executado e
 comparado pelo `gen_workload_1.py verify`.
 
+O diagnóstico interno `validateInvariants()` verifica ordenação, altura,
+`subtreeSize` e fator AVL em uma única travessia. Erros indicam a primeira
+chave inconsistente para facilitar a investigação.
+
 ## Benchmark
 
 O benchmark separa o tempo das operações do custo de leitura e escrita sempre
