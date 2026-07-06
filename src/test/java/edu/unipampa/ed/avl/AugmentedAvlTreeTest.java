@@ -2,6 +2,7 @@ package edu.unipampa.ed.avl;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import edu.unipampa.ed.api.OrderedLongSet;
@@ -168,6 +169,58 @@ class AugmentedAvlTreeTest extends OrderedLongSetContract {
 
         assertEquals(4L, tree.root.key);
         assertEquals(3L, tree.size());
+    }
+
+    @Test
+    void computesRankForPresentAndAbsentKeys() {
+        AugmentedAvlTree tree = treeWith(10L, 20L, 30L, 40L);
+
+        assertEquals(0L, tree.rank(10L));
+        assertEquals(2L, tree.rank(25L));
+        assertEquals(4L, tree.rank(50L));
+        assertEquals(0L, tree.rank(Long.MIN_VALUE));
+        assertEquals(4L, tree.rank(Long.MAX_VALUE));
+    }
+
+    @Test
+    void selectsKeysUsingZeroBasedOrder() {
+        AugmentedAvlTree tree = treeWith(40L, 10L, 30L, 20L);
+
+        assertEquals(10L, tree.select(0L));
+        assertEquals(20L, tree.select(1L));
+        assertEquals(30L, tree.select(2L));
+        assertEquals(40L, tree.select(3L));
+    }
+
+    @Test
+    void rejectsSelectIndexOutsideTree() {
+        AugmentedAvlTree tree = treeWith(10L, 20L, 30L, 40L);
+
+        assertThrows(IndexOutOfBoundsException.class, () -> tree.select(-1L));
+        assertThrows(IndexOutOfBoundsException.class, () -> tree.select(4L));
+        assertThrows(
+                IndexOutOfBoundsException.class,
+                () -> new AugmentedAvlTree().select(0L));
+    }
+
+    @Test
+    void countsKeysInsideInclusiveRange() {
+        AugmentedAvlTree tree = treeWith(10L, 20L, 30L, 40L);
+
+        assertEquals(2L, tree.rangeCount(15L, 35L));
+        assertEquals(4L, tree.rangeCount(10L, 40L));
+        assertEquals(1L, tree.rangeCount(20L, 20L));
+        assertEquals(0L, tree.rangeCount(21L, 29L));
+        assertEquals(0L, tree.rangeCount(40L, 10L));
+    }
+
+    @Test
+    void countsRangesAtLongBoundariesWithoutOverflow() {
+        AugmentedAvlTree tree = treeWith(Long.MIN_VALUE, 0L, Long.MAX_VALUE);
+
+        assertEquals(3L, tree.rangeCount(Long.MIN_VALUE, Long.MAX_VALUE));
+        assertEquals(1L, tree.rangeCount(Long.MAX_VALUE, Long.MAX_VALUE));
+        assertEquals(1L, tree.rangeCount(Long.MIN_VALUE, Long.MIN_VALUE));
     }
 
     private static AugmentedAvlTree treeWith(long... keys) {

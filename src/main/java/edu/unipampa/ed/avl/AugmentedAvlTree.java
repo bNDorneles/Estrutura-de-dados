@@ -62,6 +62,74 @@ public final class AugmentedAvlTree implements OrderedLongSet {
         return AvlRotations.size(root);
     }
 
+    /**
+     * Conta quantas chaves são estritamente menores que a chave informada.
+     *
+     * @param key limite exclusivo
+     * @return quantidade de chaves menores que {@code key}
+     */
+    public long rank(long key) {
+        long result = 0L;
+        AvlNode current = root;
+
+        while (current != null) {
+            if (key <= current.key) {
+                current = current.left;
+            } else {
+                result += 1L + AvlRotations.size(current.left);
+                current = current.right;
+            }
+        }
+
+        return result;
+    }
+
+    /**
+     * Retorna a chave que ocupa o índice informado na ordem crescente.
+     *
+     * @param index índice baseado em zero
+     * @return chave no índice
+     * @throws IndexOutOfBoundsException quando o índice não pertence à árvore
+     */
+    public long select(long index) {
+        long treeSize = size();
+        if (index < 0L || index >= treeSize) {
+            throw new IndexOutOfBoundsException(
+                    "index=" + index + ", size=" + treeSize);
+        }
+
+        long remaining = index;
+        AvlNode current = root;
+
+        while (current != null) {
+            long leftSize = AvlRotations.size(current.left);
+            if (remaining < leftSize) {
+                current = current.left;
+            } else if (remaining == leftSize) {
+                return current.key;
+            } else {
+                remaining -= leftSize + 1L;
+                current = current.right;
+            }
+        }
+
+        throw new IllegalStateException("Metadados de tamanho inconsistentes");
+    }
+
+    /**
+     * Conta as chaves no intervalo inclusivo.
+     *
+     * @param lowerInclusive limite inferior inclusivo
+     * @param upperInclusive limite superior inclusivo
+     * @return quantidade de chaves em {@code [lowerInclusive, upperInclusive]}
+     */
+    public long rangeCount(long lowerInclusive, long upperInclusive) {
+        if (lowerInclusive > upperInclusive) {
+            return 0L;
+        }
+        return countLessOrEqual(upperInclusive) - rank(lowerInclusive);
+    }
+
     private static AvlNode insert(AvlNode node, long key) {
         if (node == null) {
             return new AvlNode(key);
@@ -109,5 +177,21 @@ public final class AugmentedAvlTree implements OrderedLongSet {
             current = current.left;
         }
         return current;
+    }
+
+    private long countLessOrEqual(long key) {
+        long result = 0L;
+        AvlNode current = root;
+
+        while (current != null) {
+            if (key < current.key) {
+                current = current.left;
+            } else {
+                result += 1L + AvlRotations.size(current.left);
+                current = current.right;
+            }
+        }
+
+        return result;
     }
 }
