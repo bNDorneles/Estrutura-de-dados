@@ -84,6 +84,7 @@ Estrutura Maven
 | --- | --- |
 | erro silencioso nos metadados | recomputação centralizada e verificador de invariantes |
 | conflito no mesmo arquivo | divisão por módulos e pull requests pequenos |
+| ambientes diferentes | Docker para desenvolvimento e Maven Wrapper para execução nativa |
 | falta de memória | leitura em streaming e uso de `--max-load` |
 | benchmark instável | aquecimento, repetições e registro do ambiente |
 | atraso nos dados SOSD | começar com cargas sintéticas e baixar `face` em paralelo |

@@ -36,13 +36,16 @@ O estudo de sensibilidade tambem executara `theta` em `0.0`, `0.6`, `0.99` e
 
 - Java 17;
 - Maven para compilacao, execucao e testes;
+- Maven Wrapper para padronizar a versao sem exigir Maven global;
+- Docker Compose com Java, Maven e Python para desenvolvimento reproduzivel;
 - JUnit 5 para testes unitarios e de integracao;
 - script Python separado somente para transformar CSVs em graficos;
 - `gen_workload_1.py` como gerador de traces e oraculo de corretude.
 
 Python nao fara parte da implementacao da estrutura de dados. Ele sera usado
 apenas no pipeline auxiliar ja iniciado pelo professor e na visualizacao das
-medicoes.
+medicoes. O Docker sera usado em desenvolvimento e testes; as medicoes finais
+serao executadas nativamente para evitar interferencia da virtualizacao.
 
 ### Estrutura escolhida
 

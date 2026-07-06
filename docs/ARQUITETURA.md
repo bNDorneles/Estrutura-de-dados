@@ -14,6 +14,17 @@ Trace (.trace) -> TraceRunner -> OrderedLongSet
 BenchmarkRunner -> MetricsCollector -> CSV -> plot_results.py -> gráficos
 ```
 
+## Ambiente de desenvolvimento
+
+O ambiente Docker fixa Java 17, Maven 3.9.16 e as dependências Python. O Maven
+Wrapper oferece os mesmos comandos fora do container sem exigir Maven global.
+O cache Maven fica em volume separado e datasets, traces e resultados
+temporários não entram na imagem.
+
+O container é destinado a build, testes e desenvolvimento. Os benchmarks
+oficiais rodam nativamente para não misturar o custo da virtualização do Docker
+Desktop com o comportamento da estrutura.
+
 ## Contrato da árvore
 
 `OrderedLongSet` define:
