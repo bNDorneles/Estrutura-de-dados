@@ -65,7 +65,51 @@ docs/           arquitetura, plano, experimentos e relatório
 
 ## Como começar
 
-O projeto ainda está na fase de planejamento. A implementação deverá seguir:
+### Opção recomendada: Docker
+
+Para desenvolver e executar testes, instale apenas:
+
+- Git;
+- Docker Desktop com Docker Compose.
+
+Depois:
+
+```bash
+git clone https://github.com/bNDorneles/Estrutura-de-dados.git
+cd Estrutura-de-dados
+git switch develop
+docker compose build
+docker compose run --rm dev ./mvnw test
+```
+
+O container contém Java 17, Maven 3.9.16, Python, NumPy e Matplotlib. O código
+fica montado em `/workspace` e as dependências Maven usam um volume persistente.
+
+### Opção nativa
+
+Para trabalhar sem Docker, instale JDK 17 e Python 3. O Maven global é
+opcional porque o repositório possui Maven Wrapper:
+
+```powershell
+.\mvnw.cmd clean test
+python -m pip install -r requirements-dev.txt
+```
+
+No Linux ou macOS:
+
+```bash
+./mvnw clean test
+python3 -m pip install -r requirements-dev.txt
+```
+
+### Importante sobre os benchmarks
+
+Docker serve para desenvolvimento e testes reproduzíveis. As medições usadas
+no relatório final devem rodar nativamente, fora do container, porque a camada
+de virtualização no Windows pode alterar disco, memória, cache e latência. A
+máquina, a JVM e a metodologia devem ser registradas no relatório.
+
+O desenvolvimento deverá seguir:
 
 1. [Arquitetura](docs/ARQUITETURA.md);
 2. [Plano do projeto](docs/PLANO_PROJETO.md);
@@ -79,12 +123,9 @@ O projeto ainda está na fase de planejamento. A implementação deverá seguir:
 - cada issue deve resultar em um pull request pequeno para `develop`;
 - o outro integrante revisa o pull request antes do merge.
 
-Para começar a trabalhar, aceite o convite do repositório, clone o projeto,
-troque para `develop` e crie uma branch da issue:
+Para começar uma issue, atualize `develop` e crie uma branch:
 
 ```bash
-git clone https://github.com/bNDorneles/Estrutura-de-dados.git
-cd Estrutura-de-dados
 git switch develop
 git pull
 git switch -c feature/NUMERO-descricao

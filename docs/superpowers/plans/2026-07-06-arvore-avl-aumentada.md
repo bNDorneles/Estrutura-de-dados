@@ -38,10 +38,28 @@ docs/PROMPTS.md
 
 **Files:**
 - Create: `pom.xml`
+- Create: `Dockerfile`
+- Create: `compose.yaml`
+- Create: `.dockerignore`
+- Create: `requirements-dev.txt`
+- Create: `.mvn/wrapper/maven-wrapper.properties`
+- Create: `mvnw`
+- Create: `mvnw.cmd`
 - Create: `src/main/java/edu/unipampa/ed/api/OrderedLongSet.java`
 - Create: `src/test/java/edu/unipampa/ed/api/OrderedLongSetContractTest.java`
 
-- [ ] **Step 1: Criar um teste de contrato compilável**
+- [ ] **Step 1: Configurar build e ambiente reproduzível**
+
+Configurar Java 17, JUnit Jupiter 5.10.2, Surefire 3.2.5 e
+Exec Maven Plugin 3.2.0 no `pom.xml`. Definir
+`edu.unipampa.ed.trace.TraceRunner` como classe principal do plugin de
+execução. Gerar o Maven Wrapper fixado no Maven 3.9.16.
+
+Criar uma imagem Docker com Java 17, Maven 3.9.16, Python, NumPy e Matplotlib.
+O Compose deve montar o projeto em `/workspace` e manter o cache Maven em
+volume nomeado. Excluir datasets, traces e saídas grandes do contexto.
+
+- [ ] **Step 2: Criar um teste de contrato compilável**
 
 Definir uma implementação mínima privada no teste e verificar duplicata e
 remoção ausente:
@@ -56,13 +74,13 @@ assertEquals(1, set.size());
 assertTrue(set.search(7));
 ```
 
-- [ ] **Step 2: Executar o teste antes do contrato**
+- [ ] **Step 3: Executar o teste antes do contrato**
 
 Run: `mvn -q -Dtest=OrderedLongSetContractTest test`
 
 Expected: `FAIL` porque `OrderedLongSet` ainda não existe.
 
-- [ ] **Step 3: Criar o contrato**
+- [ ] **Step 4: Criar o contrato**
 
 ```java
 package edu.unipampa.ed.api;
@@ -75,22 +93,23 @@ public interface OrderedLongSet {
 }
 ```
 
-Configurar Java 17, JUnit Jupiter 5.10.2, Surefire 3.2.5 e
-Exec Maven Plugin 3.2.0 no `pom.xml`. Definir
-`edu.unipampa.ed.trace.TraceRunner` como classe principal do plugin de
-execução.
+- [ ] **Step 5: Verificar**
 
-- [ ] **Step 4: Verificar**
-
-Run: `mvn -q test`
+Run: `.\mvnw.cmd -q test`
 
 Expected: `BUILD SUCCESS`.
 
-- [ ] **Step 5: Commit**
+- [ ] **Step 6: Verificar no Docker**
+
+Run: `docker compose run --rm dev ./mvnw -q test`
+
+Expected: `BUILD SUCCESS`.
+
+- [ ] **Step 7: Commit**
 
 ```text
-git add pom.xml src
-git commit -m "build: configure Java project and tree contract"
+git add pom.xml .mvn mvnw mvnw.cmd Dockerfile compose.yaml .dockerignore requirements-dev.txt src README.md docs
+git commit -m "build: configure reproducible Java environment"
 ```
 
 ### Task 2: Nós, metadados e rotações AVL
