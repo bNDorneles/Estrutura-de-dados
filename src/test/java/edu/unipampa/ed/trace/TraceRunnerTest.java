@@ -85,11 +85,11 @@ class TraceRunnerTest {
     }
 
     @Test
-    void shouldThrowUnsupportedOperationExceptionForBst(@TempDir Path tempDir) throws Exception {
+    void shouldProcessCommandsCorrectlyForBst(@TempDir Path tempDir) throws Exception {
         Path traceFile = tempDir.resolve("input.trace");
         Path outFile = tempDir.resolve("output.txt");
 
-        Files.writeString(traceFile, "I 10\n");
+        Files.writeString(traceFile, "I 10\nS 10\n");
 
         String[] args = {
             "--trace", traceFile.toString(),
@@ -97,11 +97,11 @@ class TraceRunnerTest {
             "--tree", "bst"
         };
 
-        UnsupportedOperationException exception = assertThrows(
-            UnsupportedOperationException.class,
-            () -> TraceRunner.main(args)
-        );
+        TraceRunner.main(args);
+
+        String result = Files.readString(outFile);
+        String expected = "10 FOUND" + System.lineSeparator();
         
-        assertTrue(exception.getMessage().contains("bst"));
+        assertEquals(expected, result);
     }
 }

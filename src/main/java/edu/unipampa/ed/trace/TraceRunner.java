@@ -23,6 +23,8 @@ public class TraceRunner {
         edu.unipampa.ed.api.OrderedLongSet tree;
         if ("avl".equals(treeType)) {
             tree = new edu.unipampa.ed.avl.AugmentedAvlTree();
+        } else if ("bst".equals(treeType)) {
+            tree = new edu.unipampa.ed.bst.UnbalancedBst();
         } else {
             throw new UnsupportedOperationException("Tree type not supported or implemented yet: " + treeType);
         }
