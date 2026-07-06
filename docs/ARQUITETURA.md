@@ -77,6 +77,15 @@ Após cada atualização:
 
 Nas rotações, o nó que desce deve ser recomputado antes do nó que sobe.
 
+O núcleo mantém responsabilidades separadas:
+
+- `AvlNode`: estado interno de cada nó;
+- `AvlRotations`: altura, tamanho, fator de balanceamento e rotações;
+- `AugmentedAvlTree`: API pública e operações de busca/atualização.
+
+`AvlNode` e `AvlRotations` têm visibilidade de pacote e não fazem parte da API
+pública.
+
 ## Operações e erros
 
 - `select` usa índice baseado em zero e lança
