@@ -166,17 +166,18 @@ git commit -m "feat: add AVL metadata and rotations"
 **Responsável:** `bNDorneles`
 
 **Files:**
-- Modify: `src/main/java/edu/unipampa/ed/avl/AugmentedAvlTree.java`
-- Modify: `src/test/java/edu/unipampa/ed/avl/AugmentedAvlTreeTest.java`
+- Create: `src/main/java/edu/unipampa/ed/avl/AugmentedAvlTree.java`
+- Create: `src/test/java/edu/unipampa/ed/avl/AugmentedAvlTreeTest.java`
 
 - [ ] **Step 1: Testar inserção, busca e duplicatas**
 
-Verificar árvore vazia, chaves negativas, `Long.MIN_VALUE`, `Long.MAX_VALUE` e
-que inserir `42` duas vezes mantém `size() == 1`.
+Verificar árvore vazia, chaves negativas, `Long.MIN_VALUE`, `Long.MAX_VALUE`,
+que inserir `42` duas vezes mantém `size() == 1` e que entrada ordenada mantém
+altura logarítmica.
 
 - [ ] **Step 2: Confirmar falha**
 
-Run: `mvn -q -Dtest=AugmentedAvlTreeTest test`
+Run: `.\mvnw.cmd -q -Dtest=AugmentedAvlTreeTest test`
 
 Expected: novos testes falham.
 
@@ -184,11 +185,13 @@ Expected: novos testes falham.
 
 `insert(Node,long)` retorna o mesmo nó ao encontrar chave igual; nos demais
 casos, recursa, chama `recompute` e `rebalance`. `search` percorre
-iterativamente até encontrar a chave ou `null`.
+iterativamente até encontrar a chave ou `null`. A classe passa a implementar
+`OrderedLongSet` na Task 4, quando `delete` estiver correto, evitando publicar
+uma remoção incompleta.
 
 - [ ] **Step 4: Verificar**
 
-Run: `mvn -q test`
+Run: `.\mvnw.cmd -q test`
 
 Expected: `BUILD SUCCESS`.
 
@@ -223,7 +226,8 @@ Expected: testes de remoção falham.
 
 Para dois filhos, copiar a chave do menor nó da subárvore direita e remover
 esse sucessor. Ao retornar da recursão, se o nó não for nulo, executar
-`recompute(node)` e `rebalance(node)`.
+`recompute(node)` e `rebalance(node)`. Fazer `AugmentedAvlTree` implementar
+`OrderedLongSet` e reutilizar `OrderedLongSetContract` nos testes.
 
 - [ ] **Step 4: Verificar**
 
