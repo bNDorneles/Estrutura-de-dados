@@ -1,0 +1,16 @@
+.git
+.github
+.idea
+.vscode
+.worktrees
+target
+tmp
+data
+datasets
+*.class
+*.iml
+*.log
+*.trace
+*.expected
+*.out
+*.pdf
