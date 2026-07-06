@@ -117,25 +117,26 @@ git commit -m "build: configure reproducible Java environment"
 **Responsável:** `bNDorneles`
 
 **Files:**
-- Create: `src/main/java/edu/unipampa/ed/avl/AugmentedAvlTree.java`
-- Create: `src/test/java/edu/unipampa/ed/avl/AugmentedAvlTreeTest.java`
+- Create: `src/main/java/edu/unipampa/ed/avl/AvlNode.java`
+- Create: `src/main/java/edu/unipampa/ed/avl/AvlRotations.java`
+- Create: `src/test/java/edu/unipampa/ed/avl/AvlRotationsTest.java`
 
 - [ ] **Step 1: Testar as quatro rotações**
 
-Inserir, em árvores separadas, `30,20,10`, `10,20,30`, `30,10,20` e
-`10,30,20`. Expor `rootKeyForTesting()` com acesso de pacote e verificar que a
-raiz é `20`, a altura é `2` e o tamanho é `3`.
+Montar, em árvores internas separadas, `30,20,10`, `10,20,30`, `30,10,20` e
+`10,30,20`. Rebalancear a raiz e verificar chave `20`, filhos `10` e `30`,
+altura `2` e tamanho `3`.
 
 - [ ] **Step 2: Confirmar falha**
 
-Run: `mvn -q -Dtest=AugmentedAvlTreeTest test`
+Run: `.\mvnw.cmd -q -Dtest=AvlRotationsTest test`
 
 Expected: `FAIL` porque a classe não existe.
 
 - [ ] **Step 3: Implementar metadados e rotações**
 
-Usar um nó privado com `long key`, `int height`, `long subtreeSize`, `left` e
-`right`. Centralizar a atualização:
+Usar um nó com visibilidade de pacote contendo `long key`, `int height`,
+`long subtreeSize`, `left` e `right`. Centralizar a atualização:
 
 ```java
 private static void recompute(Node node) {
@@ -149,14 +150,14 @@ Implementar `rebalance(Node)` para os casos LL, RR, LR e RL.
 
 - [ ] **Step 4: Verificar**
 
-Run: `mvn -q -Dtest=AugmentedAvlTreeTest test`
+Run: `.\mvnw.cmd -q -Dtest=AvlRotationsTest test`
 
 Expected: quatro testes aprovados.
 
 - [ ] **Step 5: Commit**
 
 ```text
-git add src/main/java/edu/unipampa/ed/avl src/test/java/edu/unipampa/ed/avl
+git add src/main/java/edu/unipampa/ed/avl src/test/java/edu/unipampa/ed/avl docs
 git commit -m "feat: add AVL metadata and rotations"
 ```
 
