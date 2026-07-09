@@ -17,6 +17,7 @@ __pycache__/
 *.pyc
 
 # Cargas e saídas grandes geradas localmente
+scratch/
 *.trace
 *.expected
 *.out
