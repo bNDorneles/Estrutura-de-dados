@@ -109,6 +109,27 @@ no relatório final devem rodar nativamente, fora do container, porque a camada
 de virtualização no Windows pode alterar disco, memória, cache e latência. A
 máquina, a JVM e a metodologia devem ser registradas no relatório.
 
+### Oráculo de corretude
+
+Antes de usar qualquer medição nos experimentos, gere a carga, execute AVL e
+BST e valide as duas saídas com o oráculo do professor. Para uma checagem
+rápida sem o dataset SOSD:
+
+```powershell
+python scripts/run_oracle_check.py --synthetic 1000 --ops 1000 --out scratch/oracle-smoke
+```
+
+Para a carga do Grupo 2 com o dataset `face`, use os parâmetros padrão do
+script: mistura `50:20:30`, theta `0.9`, ordem `shuffle` e seed `2`.
+
+```powershell
+python scripts/run_oracle_check.py --keys datasets/face --format sosd --key-bytes 8 --ops 1000000 --out scratch/group2-face
+```
+
+O script gera `.trace` e `.expected`, executa `TraceRunner` com `--tree avl` e
+`--tree bst`, e chama `gen_workload_1.py verify` para cada saída. Se qualquer
+etapa falhar ou o oráculo retornar `[FALHA]`, a medição não deve ser usada.
+
 O desenvolvimento deverá seguir:
 
 1. [Arquitetura](docs/ARQUITETURA.md);

@@ -22,6 +22,20 @@ Para suavizar interferências do Sistema Operacional (Escalonador, Coleta de Lix
   - **P99**: o pior caso probabilístico; indica a latência onde 99% das requisições foram mais rápidas. Crucial para mensurar o limite do sistema sob estresse severo ou longas coletas de Lixo (Garbage Collection).
 
 ## 4. Como Executar os Ensaios
+### Passo 0: Validação com o Oráculo
+Antes de coletar ou preservar qualquer CSV, valide o mesmo trace contra AVL e
+BST usando o oráculo de corretude:
+
+```bash
+python scripts/run_oracle_check.py --synthetic 1000 --ops 1000 --out scratch/oracle-smoke
+python scripts/run_oracle_check.py --keys datasets/face --format sosd --key-bytes 8 --ops 1000000 --out scratch/group2-face
+```
+
+Somente resultados cujas duas verificações terminem com `[OK]` podem entrar na
+matriz experimental, nos gráficos e no relatório. Timeouts, falta de memória
+ou divergências devem ser registrados como falhas de execução, nunca como
+valores estimados.
+
 ### Passo 1: Execução do Coletor Java
 Invoque o runner gerando as métricas para o CSV (`relatorio.csv`):
 ```bash
