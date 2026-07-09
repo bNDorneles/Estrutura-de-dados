@@ -2,14 +2,43 @@ import unittest
 import pandas as pd
 import os
 import sys
+import tempfile
 sys.path.append(os.path.dirname(__file__))
 from plot_results import validate_columns, generate_plots
 
 class TestPlotResults(unittest.TestCase):
     def setUp(self):
-        self.mock_csv = "scratch/mock_results.csv"
-        self.out_dir = "scratch/plots"
+        self.temp_dir = tempfile.TemporaryDirectory()
+        self.mock_csv = os.path.join(self.temp_dir.name, "mock_results.csv")
+        self.out_dir = os.path.join(self.temp_dir.name, "plots")
         os.makedirs(self.out_dir, exist_ok=True)
+        pd.DataFrame([
+            {
+                "Configuracao": "avl-ops1000.trace",
+                "TotalOps": 1000,
+                "TamanhoFinal": 500,
+                "JVM": "test",
+                "SO": "test",
+                "Memoria(MB)": 256,
+                "Media(ns)": 10.0,
+                "P50(ns)": 9,
+                "P99(ns)": 20,
+            },
+            {
+                "Configuracao": "bst-ops1000.trace",
+                "TotalOps": 1000,
+                "TamanhoFinal": 500,
+                "JVM": "test",
+                "SO": "test",
+                "Memoria(MB)": 256,
+                "Media(ns)": 15.0,
+                "P50(ns)": 14,
+                "P99(ns)": 30,
+            },
+        ]).to_csv(self.mock_csv, index=False)
+
+    def tearDown(self):
+        self.temp_dir.cleanup()
     
     def test_validate_columns(self):
         df = pd.read_csv(self.mock_csv)
