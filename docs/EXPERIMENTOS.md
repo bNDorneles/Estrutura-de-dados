@@ -70,3 +70,9 @@ python scripts/plot_results.py --input relatorio.csv --outdir plots/
 ```
 
 Este script compilará automaticamente comparativos em imagens vetorizadas (`.png`) contendo Bar Charts para Baseline (P99 vs Média) e Line Charts para o comportamento assimptótico ($O(\log n)$) no eixo temporal.
+
+## 5. Relatório
+
+O texto-base do relatório esta em [`RELATORIO.md`](RELATORIO.md). Ele deve ser
+atualizado somente com numeros e graficos derivados de CSVs validados pelo
+oraculo.
