@@ -136,6 +136,38 @@ O desenvolvimento deverá seguir:
 2. [Plano do projeto](docs/PLANO_PROJETO.md);
 3. [Plano detalhado de implementação](docs/superpowers/plans/2026-07-06-arvore-avl-aumentada.md).
 
+## Reprodução final
+
+Depois de configurar Java 17 e Python, rode:
+
+```powershell
+.\mvnw.cmd clean test package
+python -m unittest discover scripts
+python scripts/run_oracle_check.py --synthetic 1000 --ops 1000 --out scratch/oracle-smoke
+```
+
+Para preparar a matriz oficial:
+
+```powershell
+python scripts/experiment_matrix.py --keys datasets/face --format sosd --key-bytes 8 --outdir scratch/matrix-face
+```
+
+O arquivo `scratch/matrix-face/commands.ps1` contem os comandos para validar
+cada trace com o oráculo e coletar `results.csv`. Depois da coleta:
+
+```powershell
+python scripts/plot_results.py --input scratch/matrix-face/results.csv --outdir scratch/matrix-face/plots
+```
+
+Material final:
+
+- [Relatório](docs/RELATORIO.md);
+- [Metodologia de experimentos](docs/EXPERIMENTOS.md);
+- [Registro de prompts](docs/PROMPTS.md);
+- [Roteiro de apresentação](docs/APRESENTACAO.md);
+- [Perguntas de defesa](docs/DEFESA.md);
+- [Checklist de entrega](docs/ENTREGA_FINAL.md).
+
 ## Fluxo de colaboração
 
 - `main`: versão estável;
