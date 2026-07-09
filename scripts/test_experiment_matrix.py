@@ -51,6 +51,20 @@ class ExperimentMatrixTest(unittest.TestCase):
         manifest_data = json.loads(manifest.read_text(encoding="utf-8"))
         self.assertEqual(len(cases), len(manifest_data["cases"]))
 
+    def test_write_commands_quotes_maven_properties_for_powershell(self):
+        temp_dir = Path("scratch/test-matrix")
+        args = experiment_matrix.build_parser().parse_args(
+            ["--synthetic", "1000", "--ops", "1000", "--outdir", str(temp_dir)]
+        )
+        cases = experiment_matrix.build_cases(args)
+
+        commands = experiment_matrix.write_commands(cases, temp_dir)
+        content = commands.read_text(encoding="utf-8")
+
+        self.assertIn('& ".\\mvnw.cmd" -q test-compile', content)
+        self.assertIn('$java = Join-Path $env:JAVA_HOME "bin/java.exe"', content)
+        self.assertIn('& $java -cp "target/classes" edu.unipampa.ed.benchmark.BenchmarkRunner', content)
+
 
 if __name__ == "__main__":
     unittest.main()

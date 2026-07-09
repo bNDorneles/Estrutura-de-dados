@@ -12,6 +12,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class BenchmarkRunner {
 
@@ -113,7 +114,7 @@ public class BenchmarkRunner {
             String so = System.getProperty("os.name") + " " + System.getProperty("os.arch");
             long memoryMb = Runtime.getRuntime().maxMemory() / (1024 * 1024);
 
-            writer.write(String.format("%s,%d,%d,%s,%s,%d,%.2f,%d,%d\n",
+            writer.write(String.format(Locale.ROOT, "%s,%d,%d,%s,%s,%d,%.2f,%d,%d\n",
                     configName, totalOps, finalSize, jvm, so, memoryMb,
                     stats.mean(), stats.p50(), stats.p99()));
             

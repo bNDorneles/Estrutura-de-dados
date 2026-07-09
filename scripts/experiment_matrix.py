@@ -94,6 +94,9 @@ def write_commands(cases, outdir, warmup=3, iterations=10, source_args=None):
         "$ErrorActionPreference = 'Stop'",
         "# Run from the repository root after configuring Java 17.",
         "# These commands validate each trace with the oracle before collecting benchmark CSV rows.",
+        'if (-not $env:JAVA_HOME) { throw "JAVA_HOME must point to Java 17 or newer." }',
+        '$java = Join-Path $env:JAVA_HOME "bin/java.exe"',
+        '& ".\\mvnw.cmd" -q test-compile',
         "",
     ]
     for trace_name, trace_cases in grouped.items():
@@ -119,10 +122,9 @@ def write_commands(cases, outdir, warmup=3, iterations=10, source_args=None):
         for case in trace_cases:
             trace_file = f"{case['trace_prefix']}.trace"
             lines.append(
-                ".\\mvnw.cmd exec:java "
-                "-Dexec.mainClass=edu.unipampa.ed.benchmark.BenchmarkRunner "
-                f"'-Dexec.args=--trace {trace_file} --tree {case['tree']} --out {csv_path} "
-                f"--warmup {warmup} --iterations {iterations}'"
+                '& $java -cp "target/classes" edu.unipampa.ed.benchmark.BenchmarkRunner '
+                f"--trace {trace_file} --tree {case['tree']} --out {csv_path} "
+                f"--warmup {warmup} --iterations {iterations}"
             )
         lines.append("")
     path.write_text("\n".join(lines), encoding="utf-8")
