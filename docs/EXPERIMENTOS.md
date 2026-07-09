@@ -36,7 +36,26 @@ matriz experimental, nos gráficos e no relatório. Timeouts, falta de memória
 ou divergências devem ser registrados como falhas de execução, nunca como
 valores estimados.
 
-### Passo 1: Execução do Coletor Java
+### Passo 1: Matriz Obrigatória
+Gere o manifesto e os comandos da matriz completa:
+
+```bash
+python scripts/experiment_matrix.py --keys datasets/face --format sosd --key-bytes 8 --outdir scratch/matrix-face
+```
+
+A matriz padrão cobre quatro ordens de grandeza (`1000`, `10000`, `100000`,
+`1000000` operações), theta em `0.0`, `0.6`, `0.99` e `1.2`, ordens
+`shuffle` e `sorted`, e as duas árvores (`avl` e `bst`). O arquivo
+`scratch/matrix-face/manifest.json` preserva a configuração dos casos e
+`scratch/matrix-face/commands.ps1` contém os comandos reproduzíveis.
+
+Para ensaio rápido sem o dataset SOSD:
+
+```bash
+python scripts/experiment_matrix.py --synthetic 1000 --ops 1000,10000 --outdir scratch/matrix-smoke
+```
+
+### Passo 2: Execução do Coletor Java
 Invoque o runner gerando as métricas para o CSV (`relatorio.csv`):
 ```bash
 ./mvnw clean install
@@ -44,7 +63,7 @@ Invoque o runner gerando as métricas para o CSV (`relatorio.csv`):
 ```
 Repita o procedimento alternando o trace e/ou a flag `--tree bst`.
 
-### Passo 2: Geração dos Gráficos Python
+### Passo 3: Geração dos Gráficos Python
 Em um ambiente configurado com Python (ou usando o contêiner `dev` através do docker-compose):
 ```bash
 python scripts/plot_results.py --input relatorio.csv --outdir plots/
