@@ -40,5 +40,6 @@ class BenchmarkRunnerTest {
         String dataLine = lines[1];
         assertTrue(dataLine.contains("avl-" + traceFile.getFileName().toString())); // Config name
         assertTrue(dataLine.contains(",4,1,")); // Total ops = 4, Final size = 1 (after I 10, I 20, D 20 -> size 1)
+        assertEquals(lines[0].split(",").length, dataLine.split(",").length);
     }
 }
