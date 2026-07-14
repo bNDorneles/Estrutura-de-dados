@@ -4,7 +4,7 @@ import os
 import sys
 import tempfile
 sys.path.append(os.path.dirname(__file__))
-from plot_results import validate_columns, generate_plots
+from plot_results import extract_metadata, validate_columns, generate_plots
 
 class TestPlotResults(unittest.TestCase):
     def setUp(self):
@@ -14,7 +14,7 @@ class TestPlotResults(unittest.TestCase):
         os.makedirs(self.out_dir, exist_ok=True)
         pd.DataFrame([
             {
-                "Configuracao": "avl-ops1000.trace",
+                "Configuracao": "avl-ops1000_theta0p99_sorted.trace",
                 "TotalOps": 1000,
                 "TamanhoFinal": 500,
                 "JVM": "test",
@@ -25,7 +25,7 @@ class TestPlotResults(unittest.TestCase):
                 "P99(ns)": 20,
             },
             {
-                "Configuracao": "bst-ops1000.trace",
+                "Configuracao": "bst-ops1000_theta0p99_sorted.trace",
                 "TotalOps": 1000,
                 "TamanhoFinal": 500,
                 "JVM": "test",
@@ -34,6 +34,28 @@ class TestPlotResults(unittest.TestCase):
                 "Media(ns)": 15.0,
                 "P50(ns)": 14,
                 "P99(ns)": 30,
+            },
+            {
+                "Configuracao": "avl-ops10000_theta0p6_shuffle.trace",
+                "TotalOps": 10000,
+                "TamanhoFinal": 5000,
+                "JVM": "test",
+                "SO": "test",
+                "Memoria(MB)": 256,
+                "Media(ns)": 12.0,
+                "P50(ns)": 10,
+                "P99(ns)": 24,
+            },
+            {
+                "Configuracao": "bst-ops10000_theta0p6_shuffle.trace",
+                "TotalOps": 10000,
+                "TamanhoFinal": 5000,
+                "JVM": "test",
+                "SO": "test",
+                "Memoria(MB)": 256,
+                "Media(ns)": 18.0,
+                "P50(ns)": 16,
+                "P99(ns)": 36,
             },
         ]).to_csv(self.mock_csv, index=False)
 
@@ -51,9 +73,23 @@ class TestPlotResults(unittest.TestCase):
     def test_generate_plots(self):
         df = pd.read_csv(self.mock_csv)
         generate_plots(df, self.out_dir)
-        
-        self.assertTrue(os.path.exists(os.path.join(self.out_dir, "baseline_comparison.png")))
-        self.assertTrue(os.path.exists(os.path.join(self.out_dir, "scale_performance.png")))
+
+        expected = {
+            "baseline_comparison.png",
+            "scale_performance.png",
+            "order_comparison.png",
+            "theta_sensitivity.png",
+            "percentiles_by_scale.png",
+            "group14_official.png",
+        }
+        self.assertTrue(expected.issubset(set(os.listdir(self.out_dir))))
+
+    def test_extract_metadata_from_matrix_configuration(self):
+        df = extract_metadata(pd.read_csv(self.mock_csv))
+
+        self.assertEqual({"avl", "bst"}, set(df["Tree"]))
+        self.assertEqual({0.6, 0.99}, set(df["Theta"]))
+        self.assertEqual({"shuffle", "sorted"}, set(df["Order"]))
 
 if __name__ == "__main__":
     unittest.main()
