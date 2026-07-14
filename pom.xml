@@ -8,7 +8,7 @@
     <artifactId>augmented-avl</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <name>Projeto Final de Estruturas de Dados</name>
-    <description>Árvore AVL aumentada e benchmark do Grupo 2.</description>
+    <description>Árvore AVL aumentada e benchmark do Grupo 14.</description>
 
     <properties>
         <maven.compiler.release>17</maven.compiler.release>

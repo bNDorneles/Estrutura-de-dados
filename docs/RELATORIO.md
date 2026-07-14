@@ -23,7 +23,7 @@ A AVL foi dividida em tres responsabilidades:
 - `AvlRotations`: recalcula metadados, calcula fator de balanceamento e aplica
   rotacoes;
 - `AugmentedAvlTree`: expoe insercao, remocao, busca, `rank`, `select` e
-  `rangeCount`.
+  `rangeMin`, agregado de intervalo exigido para o Grupo 14.
 
 A BST nao balanceada serve como linha de base. Ela permite observar o custo de
 uma estrutura sem rotacoes, principalmente em traces ordenados.
@@ -41,7 +41,7 @@ A corretude da AVL depende de cinco invariantes apos cada atualizacao:
 Nas rotacoes, o no que desce deve ser recalculado antes do no que sobe. Essa
 ordem preserva tanto a altura quanto o tamanho da subarvore, que sao usados em
 consultas de ordem. Se `subtreeSize` ficar incorreto, `rank`, `select` e
-`rangeCount` podem retornar respostas erradas mesmo quando a busca simples
+`rangeMin` podem retornar respostas erradas mesmo quando a busca simples
 continua funcionando.
 
 ## 4. Metodologia Experimental
@@ -49,8 +49,10 @@ continua funcionando.
 A matriz experimental e gerada por `scripts/experiment_matrix.py`. Ela cobre:
 
 - quatro ordens de grandeza de operacoes;
-- theta `0.0`, `0.6`, `0.99` e `1.2`;
-- ordem de insercao `shuffle` e `sorted`;
+- theta `0.99`;
+- mistura `45:30:25`;
+- ordem de insercao `sorted`;
+- seed `14`;
 - comparacao entre `avl` e `bst`.
 
 Cada trace deve ser validado com `scripts/run_oracle_check.py` antes de qualquer
@@ -82,14 +84,14 @@ rotacoes, alocacao, cache e interferencias do sistema operacional.
 
 ### Theta
 
-Comparar distribuicoes uniformes e concentradas. Thetas maiores concentram
-acessos em poucas chaves, mudando a localidade de cache e a pressao sobre
-remocoes e buscas repetidas.
+Analisar a distribuicao concentrada definida pelo theta `0.99`. Esse valor
+concentra acessos em poucas chaves, mudando a localidade de cache e a pressao
+sobre remocoes e buscas repetidas.
 
 ### Ordem de Insercao
 
-Comparar `shuffle` e `sorted`. A ordem ordenada e patologica para BST nao
-balanceada, mas a AVL deve preservar altura limitada por meio das rotacoes.
+Analisar a ordem `sorted`, que e patologica para BST nao balanceada, enquanto a
+AVL deve preservar altura limitada por meio das rotacoes.
 
 ### Baseline AVL vs BST
 

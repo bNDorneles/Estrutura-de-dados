@@ -1,7 +1,7 @@
 # Projeto Final de Estruturas de Dados
 
 Implementação e avaliação empírica de uma **árvore AVL aumentada** para o
-Grupo 2 da disciplina AL0334 - Estrutura de Dados.
+Grupo 14 da disciplina AL0334 - Estrutura de Dados.
 
 ## O que será construído
 
@@ -14,20 +14,20 @@ A estrutura armazenará chaves inteiras de 64 bits e oferecerá:
 | `search(k)` | informa se a chave existe | `O(log n)` |
 | `rank(k)` | conta as chaves menores que `k` | `O(log n)` |
 | `select(i)` | encontra a chave de índice ordenado `i` | `O(log n)` |
-| `rangeCount(a, b)` | conta chaves no intervalo inclusivo `[a, b]` | `O(log n)` |
+| `rangeMin(a, b)` | menor chave no intervalo inclusivo `[a, b]` | `O(log n)` |
 
 Cada nó guarda sua altura e o tamanho da subárvore. Esses metadados são
 recalculados durante as rotações, permitindo balanceamento e consultas de
 ordem eficientes.
 
-## Configuração do Grupo 2
+## Configuração do Grupo 14
 
 - dataset SOSD: `face`;
-- `theta`: `0.9`;
-- mistura `I:D:S`: `50:20:30`;
-- agregado: contagem;
-- ordem principal: `shuffle`;
-- seed: `2`.
+- `theta`: `0.99`;
+- mistura `I:D:S`: `45:30:25`;
+- agregado: mínimo;
+- ordem principal: `sorted`;
+- seed: `14`.
 
 O programa principal será escrito em **Java 17**. O script Python fornecido
 pelo professor será usado somente para gerar cargas e verificar respostas.
@@ -119,11 +119,11 @@ rápida sem o dataset SOSD:
 python scripts/run_oracle_check.py --synthetic 1000 --ops 1000 --out scratch/oracle-smoke
 ```
 
-Para a carga do Grupo 2 com o dataset `face`, use os parâmetros padrão do
-script: mistura `50:20:30`, theta `0.9`, ordem `shuffle` e seed `2`.
+Para a carga do Grupo 14 com o dataset `face`, use os parâmetros padrão do
+script: mistura `45:30:25`, theta `0.99`, ordem `sorted` e seed `14`.
 
 ```powershell
-python scripts/run_oracle_check.py --keys datasets/face --format sosd --key-bytes 8 --ops 1000000 --out scratch/group2-face
+python scripts/run_oracle_check.py --keys datasets/face --format sosd --key-bytes 8 --ops 1000000 --out scratch/group14-face
 ```
 
 O script gera `.trace` e `.expected`, executa `TraceRunner` com `--tree avl` e

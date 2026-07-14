@@ -16,8 +16,9 @@
 ## Experimentos
 
 - [x] Matriz cobre quatro ordens de grandeza.
-- [x] Matriz cobre theta `0.0`, `0.6`, `0.99` e `1.2`.
-- [x] Matriz cobre `shuffle` e `sorted`.
+- [x] Matriz usa theta `0.99`.
+- [x] Matriz usa ordem `sorted`.
+- [x] Matriz usa mix `45:30:25` e seed `14`.
 - [x] Matriz cobre AVL e BST.
 - [x] Timeout e falta de memoria devem ser registrados como falha, nao estimados.
 

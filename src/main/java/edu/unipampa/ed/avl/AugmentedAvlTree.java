@@ -131,6 +131,37 @@ public final class AugmentedAvlTree implements OrderedLongSet {
     }
 
     /**
+     * Retorna a menor chave no intervalo inclusivo.
+     *
+     * @param lowerInclusive limite inferior inclusivo
+     * @param upperInclusive limite superior inclusivo
+     * @return menor chave presente em {@code [lowerInclusive, upperInclusive]}
+     * @throws IndexOutOfBoundsException quando o intervalo nao contem chaves
+     */
+    public long rangeMin(long lowerInclusive, long upperInclusive) {
+        if (lowerInclusive > upperInclusive) {
+            throw new IndexOutOfBoundsException("Intervalo vazio");
+        }
+
+        AvlNode current = root;
+        Long candidate = null;
+
+        while (current != null) {
+            if (current.key < lowerInclusive) {
+                current = current.right;
+            } else {
+                candidate = current.key;
+                current = current.left;
+            }
+        }
+
+        if (candidate == null || candidate > upperInclusive) {
+            throw new IndexOutOfBoundsException("Nenhuma chave no intervalo");
+        }
+        return candidate;
+    }
+
+    /**
      * Valida os invariantes internos da árvore.
      *
      * <p>Tem visibilidade de pacote para uso por testes e diagnósticos do

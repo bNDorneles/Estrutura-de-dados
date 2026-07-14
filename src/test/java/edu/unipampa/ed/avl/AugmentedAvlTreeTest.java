@@ -223,6 +223,24 @@ class AugmentedAvlTreeTest extends OrderedLongSetContract {
         assertEquals(1L, tree.rangeCount(Long.MIN_VALUE, Long.MIN_VALUE));
     }
 
+    @Test
+    void findsMinimumKeyInsideInclusiveRange() {
+        AugmentedAvlTree tree = treeWith(10L, 20L, 30L, 40L);
+
+        assertEquals(20L, tree.rangeMin(15L, 35L));
+        assertEquals(10L, tree.rangeMin(10L, 40L));
+        assertEquals(30L, tree.rangeMin(30L, 30L));
+    }
+
+    @Test
+    void rejectsMinimumRangeWithoutKeys() {
+        AugmentedAvlTree tree = treeWith(10L, 20L, 30L, 40L);
+
+        assertThrows(IndexOutOfBoundsException.class, () -> tree.rangeMin(21L, 29L));
+        assertThrows(IndexOutOfBoundsException.class, () -> tree.rangeMin(40L, 10L));
+        assertThrows(IndexOutOfBoundsException.class, () -> new AugmentedAvlTree().rangeMin(1L, 2L));
+    }
+
     private static AugmentedAvlTree treeWith(long... keys) {
         AugmentedAvlTree tree = new AugmentedAvlTree();
         for (long key : keys) {

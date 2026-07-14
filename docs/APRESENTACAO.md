@@ -6,7 +6,7 @@ Tempo alvo: 10 minutos.
 
 - Apresentar a necessidade de manter um conjunto ordenado de chaves de 64 bits.
 - Explicar as operacoes: inserir, remover, buscar, `rank`, `select` e
-  `rangeCount`.
+  `rangeMin`, agregado de intervalo do grupo 14.
 - Dizer que a avaliacao compara AVL aumentada contra BST nao balanceada.
 
 ## 2. Estrutura da Solucao (2 min)
@@ -29,7 +29,7 @@ Tempo alvo: 10 minutos.
 
 - Geracao de traces pelo script do professor.
 - Validacao obrigatoria pelo oraculo antes de aceitar resultados.
-- Matriz com quatro ordens de grandeza, quatro thetas, `shuffle`/`sorted` e
+- Matriz com quatro ordens de grandeza, `theta 0.99`, ordem `sorted`, seed 14 e
   AVL/BST.
 - Execucao nativa na maquina do grupo para evitar distorcao do Docker.
 

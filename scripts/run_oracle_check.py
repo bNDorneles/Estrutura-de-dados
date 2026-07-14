@@ -18,10 +18,10 @@ def build_parser():
     parser.add_argument("--out", required=True, help="Output prefix for trace, expected, and tree outputs")
     parser.add_argument("--ops", type=int, default=1_000_000)
     parser.add_argument("--universe", type=int, default=0)
-    parser.add_argument("--mix", default="50:20:30")
-    parser.add_argument("--theta", type=float, default=0.9)
-    parser.add_argument("--insert-order", choices=["shuffle", "sorted", "popularity"], default="shuffle")
-    parser.add_argument("--seed", type=int, default=2)
+    parser.add_argument("--mix", default="45:30:25")
+    parser.add_argument("--theta", type=float, default=0.99)
+    parser.add_argument("--insert-order", choices=["shuffle", "sorted", "popularity"], default="sorted")
+    parser.add_argument("--seed", type=int, default=14)
     return parser
 
 
