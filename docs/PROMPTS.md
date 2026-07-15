@@ -11,7 +11,7 @@ afetados.
 | 2026-07-06 | Adicionar trace, BST e benchmark | Usar contrato comum para alternar entre AVL e BST | `src/main/java/edu/unipampa/ed/trace/*`, `src/main/java/edu/unipampa/ed/bst/*`, `src/main/java/edu/unipampa/ed/benchmark/*` |
 | 2026-07-09 | Integrar oraculo de corretude | Criar fluxo que gera trace, executa AVL/BST e falha se o oraculo falhar | `scripts/run_oracle_check.py`, `scripts/test_run_oracle_check.py`, `README.md`, `docs/EXPERIMENTOS.md` |
 | 2026-07-09 | Definir matriz experimental | Gerar manifesto e comandos reprodutiveis antes de coletar CSVs | `scripts/experiment_matrix.py`, `scripts/test_experiment_matrix.py`, `docs/EXPERIMENTOS.md` |
-| 2026-07-09 | Preparar relatorio e defesa | Escrever fonte do relatorio sem numeros nao medidos e organizar defesa oral | `docs/RELATORIO.md`, `docs/APRESENTACAO.md`, `docs/DEFESA.md`, `docs/ENTREGA_FINAL.md` |
+| 2026-07-09 | Preparar relatorio e defesa | Escrever fonte do relatorio sem numeros nao medidos e organizar defesa oral | `docs/RELATORIO.md`, `presentation/ROTEIRO_SLIDES.md`, `presentation/ROTEIRO_APRESENTACAO.md`, `docs/DEFESA.md`, `docs/ENTREGA_FINAL.md` |
 
 ## Observacao
 

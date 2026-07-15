@@ -8,8 +8,8 @@ from pathlib import Path
 
 
 DEFAULT_OPS = [1_000, 10_000, 100_000, 1_000_000]
-DEFAULT_THETAS = [0.0, 0.6, 0.99, 1.2]
-DEFAULT_ORDERS = ["shuffle", "sorted"]
+DEFAULT_THETAS = [0.99]
+DEFAULT_ORDERS = ["sorted"]
 DEFAULT_TREES = ["avl", "bst"]
 
 
@@ -28,8 +28,8 @@ def build_parser():
     parser.add_argument("--format", choices=["auto", "sosd", "text"], default="auto")
     parser.add_argument("--key-bytes", type=int, choices=[4, 8], default=8)
     parser.add_argument("--max-load", type=int, default=0)
-    parser.add_argument("--mix", default="50:20:30")
-    parser.add_argument("--seed", type=int, default=2)
+    parser.add_argument("--mix", default="45:30:25")
+    parser.add_argument("--seed", type=int, default=14)
     parser.add_argument("--warmup", type=int, default=3)
     parser.add_argument("--iterations", type=int, default=10)
     return parser

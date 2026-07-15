@@ -42,6 +42,7 @@ long size();
 long rank(long key);
 long select(long index);
 long rangeCount(long lowerInclusive, long upperInclusive);
+long rangeMin(long lowerInclusive, long upperInclusive);
 ```
 
 As chaves são únicas. Inserir uma duplicata ou remover uma chave ausente não
@@ -59,11 +60,15 @@ left: Node
 right: Node
 ```
 
-`subtreeSize` é o aumento exigido pelo Grupo 2. Ele permite:
+`subtreeSize` é o aumento usado para consultas de ordem. Ele permite:
 
 - `rank(k)`: acumular tamanhos de subárvores ignoradas durante a busca;
 - `select(i)`: decidir se o índice está à esquerda, no nó ou à direita;
 - `rangeCount(a,b)`: `countLessOrEqual(b) - rank(a)`.
+
+Para a configuração do Grupo 14, o agregado de intervalo exigido é
+`rangeMin(a,b)`, que busca o primeiro candidato maior ou igual ao limite
+inferior e valida se ele ainda pertence ao limite superior.
 
 ## Invariantes
 
@@ -92,6 +97,8 @@ pública.
   `IndexOutOfBoundsException` para índice negativo ou maior ou igual ao
   tamanho;
 - `rangeCount(a,b)` devolve zero quando `a > b`;
+- `rangeMin(a,b)` lança `IndexOutOfBoundsException` quando o intervalo não
+  contém chaves;
 - o leitor ignora linhas vazias e comentários iniciados por `#`;
 - operação desconhecida, chave inválida ou quantidade incorreta de campos
   produz erro com o número da linha;
@@ -118,6 +125,6 @@ derivados desses arquivos.
 O estudo obrigatório compara:
 
 - pelo menos quatro ordens de grandeza;
-- `theta` em `0.0`, `0.6`, `0.99` e `1.2`;
-- `shuffle` e `sorted`;
+- `theta` `0.99`;
+- ordem `sorted`;
 - AVL e BST não balanceada.

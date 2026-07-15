@@ -1,191 +1,118 @@
-# Projeto Final de Estruturas de Dados
+# AVL Aumentada - Grupo 14
 
-Implementação e avaliação empírica de uma **árvore AVL aumentada** para o
-Grupo 2 da disciplina AL0334 - Estrutura de Dados.
+Implementacao e avaliacao empirica de uma arvore AVL aumentada para a disciplina
+AL0334 - Estrutura de Dados. A estrutura armazena chaves inteiras de 64 bits,
+mantem metadados de altura e tamanho de subarvore e oferece operacoes ordenadas
+em tempo logaritmico.
 
-## O que será construído
+## Resultado principal
 
-A estrutura armazenará chaves inteiras de 64 bits e oferecerá:
+Na configuracao oficial do Grupo 14 (`face`, theta `0.99`, mix `45:30:25`,
+ordem `sorted`, seed `14`), a AVL manteve latencia media de **137,7 ns** em um
+milhao de operacoes. A BST nao balanceada atingiu **166.278,6 ns**: a AVL foi
+aproximadamente **1.207 vezes mais rapida** no caso patologico.
 
-| Operação | Resultado | Complexidade esperada |
+![Comparacao oficial do Grupo 14](results/final/plots/group14_official.png)
+
+As 64 medicoes reais e os seis graficos utilizados no relatorio e na
+apresentacao estao em [results/final](results/final/).
+
+## Operacoes
+
+| Operacao | Descricao | Complexidade AVL |
 | --- | --- | --- |
-| `insert(k)` | insere uma chave sem duplicá-la | `O(log n)` |
-| `delete(k)` | remove uma chave, se existir | `O(log n)` |
-| `search(k)` | informa se a chave existe | `O(log n)` |
-| `rank(k)` | conta as chaves menores que `k` | `O(log n)` |
-| `select(i)` | encontra a chave de índice ordenado `i` | `O(log n)` |
-| `rangeCount(a, b)` | conta chaves no intervalo inclusivo `[a, b]` | `O(log n)` |
+| `insert(k)` | insere sem duplicar | `O(log n)` |
+| `delete(k)` | remove, se existir | `O(log n)` |
+| `search(k)` | consulta pertinencia | `O(log n)` |
+| `rank(k)` | conta chaves menores que `k` | `O(log n)` |
+| `select(i)` | retorna a chave de indice ordenado `i` | `O(log n)` |
+| `rangeMin(a, b)` | menor chave no intervalo inclusivo | `O(log n)` |
 
-Cada nó guarda sua altura e o tamanho da subárvore. Esses metadados são
-recalculados durante as rotações, permitindo balanceamento e consultas de
-ordem eficientes.
-
-## Configuração do Grupo 2
-
-- dataset SOSD: `face`;
-- `theta`: `0.9`;
-- mistura `I:D:S`: `50:20:30`;
-- agregado: contagem;
-- ordem principal: `shuffle`;
-- seed: `2`.
-
-O programa principal será escrito em **Java 17**. O script Python fornecido
-pelo professor será usado somente para gerar cargas e verificar respostas.
-
-## Materiais fornecidos pelo professor
-
-- [Enunciado do projeto](projeto_final_estruturas_de_dados.pdf);
-- [Plano de ensino da disciplina](AL0334.pdf);
-- [Gerador de carga e oráculo](gen_workload_1.py).
-
-Os PDFs são a fonte dos requisitos. O gerador cria arquivos `.trace` e
-`.expected`; esses arquivos podem ser muito grandes e, por isso, não devem ser
-enviados ao Git.
-
-## Entregas
-
-O trabalho inclui código, testes, estudo empírico, justificativa das decisões,
-relatório, apresentação oral e registro organizado dos prompts utilizados.
-Os números e gráficos do relatório deverão vir de execuções reais na máquina
-do grupo.
-
-## Organização prevista
+## Arquitetura
 
 ```text
-src/main/java/edu/unipampa/ed/
-  api/          contrato comum das árvores
-  avl/          árvore AVL aumentada
-  baseline/     BST não balanceada para comparação
-  trace/        leitura e execução dos traces
-  benchmark/    medições e exportação CSV
-src/test/java/edu/unipampa/ed/
-scripts/        geração dos gráficos
-docs/           arquitetura, plano, experimentos e relatório
+gen_workload_1.py
+        |
+        v
+TraceRunner --> OrderedLongSet --> AugmentedAvlTree
+                            \--> UnbalancedBst
+        |
+        v
+oraculo de corretude --> BenchmarkRunner --> results.csv --> graficos
 ```
 
-## Como começar
+- `OrderedLongSet`: contrato comum entre AVL e BST.
+- `AugmentedAvlTree`: AVL aumentada com altura e tamanho de subarvore.
+- `UnbalancedBst`: baseline deliberadamente ingenua.
+- `TraceRunner`: executa traces e produz respostas para o oraculo.
+- `BenchmarkRunner`: mede media, P50 e P99 sem incluir leitura de arquivo.
 
-### Opção recomendada: Docker
+Detalhes: [arquitetura](docs/ARQUITETURA.md) e
+[relatorio tecnico](docs/RELATORIO.md).
 
-Para desenvolver e executar testes, instale apenas:
+## Reproducao
 
-- Git;
-- Docker Desktop com Docker Compose.
+Requisitos: JDK 17 ou superior e Python 3 com as dependencias de
+`requirements-dev.txt`.
 
-Depois:
-
-```bash
-git clone https://github.com/bNDorneles/Estrutura-de-dados.git
-cd Estrutura-de-dados
-git switch develop
-docker compose build
-docker compose run --rm dev ./mvnw test
-```
-
-O container contém Java 17, Maven 3.9.16, Python, NumPy e Matplotlib. O código
-fica montado em `/workspace` e as dependências Maven usam um volume persistente.
-
-### Opção nativa
-
-Para trabalhar sem Docker, instale JDK 17 e Python 3. O Maven global é
-opcional porque o repositório possui Maven Wrapper:
+No Windows:
 
 ```powershell
-.\mvnw.cmd clean test
 python -m pip install -r requirements-dev.txt
+.\mvnw.cmd clean test package
+python -m unittest discover scripts
 ```
 
 No Linux ou macOS:
 
 ```bash
-./mvnw clean test
 python3 -m pip install -r requirements-dev.txt
+./mvnw clean test package
+python3 -m unittest discover scripts
 ```
 
-### Importante sobre os benchmarks
+### Experimento oficial
 
-Docker serve para desenvolvimento e testes reproduzíveis. As medições usadas
-no relatório final devem rodar nativamente, fora do container, porque a camada
-de virtualização no Windows pode alterar disco, memória, cache e latência. A
-máquina, a JVM e a metodologia devem ser registradas no relatório.
-
-### Oráculo de corretude
-
-Antes de usar qualquer medição nos experimentos, gere a carga, execute AVL e
-BST e valide as duas saídas com o oráculo do professor. Para uma checagem
-rápida sem o dataset SOSD:
+O dataset SOSD `face` nao e versionado. Depois de coloca-lo em
+`datasets/face`, gere e execute a matriz:
 
 ```powershell
-python scripts/run_oracle_check.py --synthetic 1000 --ops 1000 --out scratch/oracle-smoke
+python scripts/experiment_matrix.py `
+  --keys datasets/face `
+  --format sosd `
+  --key-bytes 8 `
+  --max-load 10000000 `
+  --ops 1000,10000,100000,1000000 `
+  --thetas 0.0,0.6,0.99,1.2 `
+  --orders shuffle,sorted `
+  --mix 45:30:25 `
+  --seed 14 `
+  --outdir scratch/matrix-face
+
+.\scratch\matrix-face\commands.ps1
+python scripts/plot_results.py `
+  --input scratch/matrix-face/results.csv `
+  --outdir scratch/matrix-face/plots
 ```
 
-Para a carga do Grupo 2 com o dataset `face`, use os parâmetros padrão do
-script: mistura `50:20:30`, theta `0.9`, ordem `shuffle` e seed `2`.
+Cada trace e validado pelo oraculo para AVL e BST antes da coleta. A medicao
+usa 3 ciclos de aquecimento e 10 repeticoes, executados nativamente no Windows
+11 com JVM 21.0.9.
 
-```powershell
-python scripts/run_oracle_check.py --keys datasets/face --format sosd --key-bytes 8 --ops 1000000 --out scratch/group2-face
-```
+## Entrega
 
-O script gera `.trace` e `.expected`, executa `TraceRunner` com `--tree avl` e
-`--tree bst`, e chama `gen_workload_1.py verify` para cada saída. Se qualquer
-etapa falhar ou o oráculo retornar `[FALHA]`, a medição não deve ser usada.
+- [Resultados finais](results/final/)
+- [Apresentacao PowerPoint](presentation/Grupo14-AVL-Aumentada.pptx)
+- [Roteiro dos slides](presentation/ROTEIRO_SLIDES.md)
+- [Roteiro oral](presentation/ROTEIRO_APRESENTACAO.md)
+- [Relatorio tecnico](docs/RELATORIO.md)
+- [Metodologia experimental](docs/EXPERIMENTOS.md)
+- [Preparacao para defesa](docs/DEFESA.md)
+- [Registro de prompts](docs/PROMPTS.md)
+- [Checklist final](docs/ENTREGA_FINAL.md)
 
-O desenvolvimento deverá seguir:
+## Autoria
 
-1. [Arquitetura](docs/ARQUITETURA.md);
-2. [Plano do projeto](docs/PLANO_PROJETO.md);
-3. [Plano detalhado de implementação](docs/superpowers/plans/2026-07-06-arvore-avl-aumentada.md).
-
-## Reprodução final
-
-Depois de configurar Java 17 e Python, rode:
-
-```powershell
-.\mvnw.cmd clean test package
-python -m unittest discover scripts
-python scripts/run_oracle_check.py --synthetic 1000 --ops 1000 --out scratch/oracle-smoke
-```
-
-Para preparar a matriz oficial:
-
-```powershell
-python scripts/experiment_matrix.py --keys datasets/face --format sosd --key-bytes 8 --outdir scratch/matrix-face
-```
-
-O arquivo `scratch/matrix-face/commands.ps1` contem os comandos para validar
-cada trace com o oráculo e coletar `results.csv`. Depois da coleta:
-
-```powershell
-python scripts/plot_results.py --input scratch/matrix-face/results.csv --outdir scratch/matrix-face/plots
-```
-
-Material final:
-
-- [Relatório](docs/RELATORIO.md);
-- [Metodologia de experimentos](docs/EXPERIMENTOS.md);
-- [Registro de prompts](docs/PROMPTS.md);
-- [Roteiro de apresentação](docs/APRESENTACAO.md);
-- [Perguntas de defesa](docs/DEFESA.md);
-- [Checklist de entrega](docs/ENTREGA_FINAL.md).
-
-## Fluxo de colaboração
-
-- `main`: versão estável;
-- `develop`: integração antes da `main`;
-- branches de trabalho: `feature/<numero>-<descricao>`;
-- cada issue deve resultar em um pull request pequeno para `develop`;
-- o outro integrante revisa o pull request antes do merge.
-
-Para começar uma issue, atualize `develop` e crie uma branch:
-
-```bash
-git switch develop
-git pull
-git switch -c feature/NUMERO-descricao
-```
-
-Responsáveis:
-
-- `bNDorneles`: núcleo AVL e invariantes;
-- `gustavodanjos`: trace, baseline e benchmark;
-- ambos: integração, experimentos, relatório e defesa.
+- `bNDorneles`: nucleo AVL, invariantes, integracao e justificativa tecnica.
+- `gustavodanjos`: trace, baseline BST, benchmark, CSV e graficos.
+- Ambos: experimentos, interpretacao, relatorio e defesa.

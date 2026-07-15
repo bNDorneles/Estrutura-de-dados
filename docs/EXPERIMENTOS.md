@@ -28,7 +28,7 @@ BST usando o oráculo de corretude:
 
 ```bash
 python scripts/run_oracle_check.py --synthetic 1000 --ops 1000 --out scratch/oracle-smoke
-python scripts/run_oracle_check.py --keys datasets/face --format sosd --key-bytes 8 --ops 1000000 --out scratch/group2-face
+python scripts/run_oracle_check.py --keys datasets/face --format sosd --key-bytes 8 --ops 1000000 --out scratch/group14-face
 ```
 
 Somente resultados cujas duas verificações terminem com `[OK]` podem entrar na
@@ -43,9 +43,9 @@ Gere o manifesto e os comandos da matriz completa:
 python scripts/experiment_matrix.py --keys datasets/face --format sosd --key-bytes 8 --outdir scratch/matrix-face
 ```
 
-A matriz padrão cobre quatro ordens de grandeza (`1000`, `10000`, `100000`,
-`1000000` operações), theta em `0.0`, `0.6`, `0.99` e `1.2`, ordens
-`shuffle` e `sorted`, e as duas árvores (`avl` e `bst`). O arquivo
+A matriz padrão segue o Grupo 14: quatro ordens de grandeza (`1000`, `10000`,
+`100000`, `1000000` operações), theta `0.99`, mistura `45:30:25`, ordem
+`sorted`, seed `14` e as duas árvores (`avl` e `bst`). O arquivo
 `scratch/matrix-face/manifest.json` preserva a configuração dos casos e
 `scratch/matrix-face/commands.ps1` contém os comandos reproduzíveis.
 

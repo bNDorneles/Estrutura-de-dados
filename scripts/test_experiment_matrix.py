@@ -16,8 +16,10 @@ class ExperimentMatrixTest(unittest.TestCase):
 
         cases = experiment_matrix.build_cases(args)
 
-        self.assertEqual({0.0, 0.6, 0.99, 1.2}, {case["theta"] for case in cases})
-        self.assertEqual({"shuffle", "sorted"}, {case["insert_order"] for case in cases})
+        self.assertEqual({0.99}, {case["theta"] for case in cases})
+        self.assertEqual({"sorted"}, {case["insert_order"] for case in cases})
+        self.assertEqual({"45:30:25"}, {case["mix"] for case in cases})
+        self.assertEqual({14}, {case["seed"] for case in cases})
         self.assertEqual({"avl", "bst"}, {case["tree"] for case in cases})
         self.assertGreaterEqual(len({case["ops"] for case in cases}), 4)
 
@@ -29,8 +31,8 @@ class ExperimentMatrixTest(unittest.TestCase):
         cases = experiment_matrix.build_cases(args)
         first = cases[0]
 
-        self.assertEqual("ops1000_theta0p0_shuffle_avl", first["name"])
-        self.assertEqual("scratch/matrix/traces/ops1000_theta0p0_shuffle", first["trace_prefix"])
+        self.assertEqual("ops1000_theta0p99_sorted_avl", first["name"])
+        self.assertEqual("scratch/matrix/traces/ops1000_theta0p99_sorted", first["trace_prefix"])
         self.assertEqual(3, first["warmup"])
         self.assertEqual(10, first["iterations"])
 

@@ -23,7 +23,7 @@ A AVL foi dividida em tres responsabilidades:
 - `AvlRotations`: recalcula metadados, calcula fator de balanceamento e aplica
   rotacoes;
 - `AugmentedAvlTree`: expoe insercao, remocao, busca, `rank`, `select` e
-  `rangeCount`.
+  `rangeMin`, agregado de intervalo exigido para o Grupo 14.
 
 A BST nao balanceada serve como linha de base. Ela permite observar o custo de
 uma estrutura sem rotacoes, principalmente em traces ordenados.
@@ -41,7 +41,7 @@ A corretude da AVL depende de cinco invariantes apos cada atualizacao:
 Nas rotacoes, o no que desce deve ser recalculado antes do no que sobe. Essa
 ordem preserva tanto a altura quanto o tamanho da subarvore, que sao usados em
 consultas de ordem. Se `subtreeSize` ficar incorreto, `rank`, `select` e
-`rangeCount` podem retornar respostas erradas mesmo quando a busca simples
+`rangeMin` podem retornar respostas erradas mesmo quando a busca simples
 continua funcionando.
 
 ## 4. Metodologia Experimental
@@ -49,8 +49,10 @@ continua funcionando.
 A matriz experimental e gerada por `scripts/experiment_matrix.py`. Ela cobre:
 
 - quatro ordens de grandeza de operacoes;
-- theta `0.0`, `0.6`, `0.99` e `1.2`;
-- ordem de insercao `shuffle` e `sorted`;
+- theta `0.99`;
+- mistura `45:30:25`;
+- ordem de insercao `sorted`;
+- seed `14`;
 - comparacao entre `avl` e `bst`.
 
 Cada trace deve ser validado com `scripts/run_oracle_check.py` antes de qualquer
@@ -65,36 +67,43 @@ e numero de repeticoes.
 
 ## 5. Resultados Medidos
 
-Os graficos e tabelas desta secao devem ser derivados de `results.csv`, gerado
-apos a validacao pelo oraculo. Os arquivos brutos ficam fora do Git por tamanho
-e reprodutibilidade.
+Os graficos e tabelas desta secao foram derivados das 64 linhas de
+`results/final/results.csv`, coletadas apos validacao pelo oraculo. Foram
+avaliadas quatro escalas, quatro valores de theta, duas ordens de insercao e as
+duas estruturas.
 
 ### Escala
 
-Comparar a latencia media conforme o numero de operacoes cresce. A expectativa
-teorica e que a AVL mantenha comportamento logaritmico, enquanto a BST pode
-degradar fortemente em entradas ordenadas.
+A AVL permaneceu entre 106,2 ns e 298,2 ns na configuracao oficial. Em um
+milhao de operacoes, registrou 137,7 ns de media. A BST passou de 301,2 ns em
+mil operacoes para 166.278,6 ns em um milhao, confirmando a degradacao causada
+pela altura linear.
 
 ### P50 e P99
 
-Comparar mediana e cauda. O p99 evidencia picos causados por caminhos longos,
-rotacoes, alocacao, cache e interferencias do sistema operacional.
+Na configuracao oficial com um milhao de operacoes, a AVL obteve P50 de 138 ns
+e P99 de 140 ns. A BST obteve P50 de 166.238 ns e P99 de 166.477 ns. A cauda
+proxima da mediana mostra que a diferenca e estrutural e persistente, nao um
+pico isolado.
 
 ### Theta
 
-Comparar distribuicoes uniformes e concentradas. Thetas maiores concentram
-acessos em poucas chaves, mudando a localidade de cache e a pressao sobre
-remocoes e buscas repetidas.
+Os ensaios repetidos com theta em `0.0`, `0.6`, `0.99` e `1.2` mostraram efeito
+secundario diante da ordem de insercao. O enviesamento altera a localidade de
+cache, mas nao corrige a degeneracao da BST ordenada.
 
 ### Ordem de Insercao
 
-Comparar `shuffle` e `sorted`. A ordem ordenada e patologica para BST nao
-balanceada, mas a AVL deve preservar altura limitada por meio das rotacoes.
+Com `shuffle`, AVL e BST permaneceram na mesma ordem de grandeza. Com `sorted`,
+a BST cresceu ate 166.278,6 ns, enquanto a AVL permaneceu em 137,7 ns. As
+rotacoes preservaram altura logaritmica mesmo sob a entrada patologica.
 
 ### Baseline AVL vs BST
 
-A BST e usada como baseline para evidenciar o custo-beneficio do balanceamento:
-rotacoes adicionam trabalho local, mas evitam crescimento linear da altura.
+A BST evidencia o custo-beneficio do balanceamento: em cargas pequenas ou
+embaralhadas ela pode ser competitiva por nao executar rotacoes. No caso
+oficial de um milhao de operacoes, porem, a AVL foi aproximadamente 1.207 vezes
+mais rapida.
 
 ## 6. Teoria versus Pratica
 
@@ -103,10 +112,10 @@ balanceada pode chegar a `O(n)`. Na pratica, os resultados tambem dependem de
 cache, padrao de acesso, alocacao de objetos, custo das rotacoes e estabilidade
 da JVM durante a medicao.
 
-Quando a matriz oficial for executada, a interpretacao deve confrontar cada
-grafico com essas expectativas. Divergencias devem ser explicadas a partir do
-ambiente, do trace, do aquecimento ou de caracteristicas da implementacao, nunca
-por extrapolacao sem medicao.
+Os resultados confirmam a teoria. O custo local de atualizar metadados e
+rotacionar aparece nas menores escalas, mas permanece limitado. Na BST
+ordenada, cada nova chave percorre uma cadeia crescente; por isso a latencia por
+operacao aumenta junto com o numero de elementos.
 
 ## 7. Alternativas Descartadas
 
