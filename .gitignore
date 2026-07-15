@@ -22,6 +22,7 @@ scratch/
 *.expected
 *.out
 *.csv
+!results/final/results.csv
 data/
 datasets/
 books_200M_uint32

@@ -5,7 +5,8 @@
 - [x] README cobre clone, build, testes e ambiente.
 - [x] README cobre geracao e validacao com oraculo.
 - [x] README referencia matriz, benchmark e graficos.
-- [x] Traces, expected, outputs, CSVs e plots ficam fora do Git.
+- [x] Traces, expected, outputs, datasets e logs ficam fora do Git.
+- [x] CSV final e seis plots reais ficam versionados em `results/final/`.
 
 ## Corretude
 
@@ -16,8 +17,8 @@
 ## Experimentos
 
 - [x] Matriz cobre quatro ordens de grandeza.
-- [x] Matriz usa theta `0.99`.
-- [x] Matriz usa ordem `sorted`.
+- [x] Matriz cobre theta `0.0`, `0.6`, `0.99` e `1.2`.
+- [x] Matriz cobre `shuffle` e `sorted`.
 - [x] Matriz usa mix `45:30:25` e seed `14`.
 - [x] Matriz cobre AVL e BST.
 - [x] Timeout e falta de memoria devem ser registrados como falha, nao estimados.
@@ -26,10 +27,10 @@
 
 - [x] Relatorio fonte criado em `docs/RELATORIO.md`.
 - [x] Prompts registrados em `docs/PROMPTS.md`.
-- [x] Roteiro de apresentacao criado em `docs/APRESENTACAO.md`.
+- [x] PowerPoint e roteiros criados em `presentation/`.
 - [x] Perguntas de defesa preparadas em `docs/DEFESA.md`.
-- [ ] Revisao final pelos dois integrantes.
-- [ ] Insercao dos graficos oficiais apos execucao nativa da matriz.
+- [x] Graficos oficiais inseridos na apresentacao.
+- [x] CSV com 64 medicoes preservado para auditoria.
 
 ## Verificacao
 

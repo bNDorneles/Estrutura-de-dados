@@ -67,36 +67,43 @@ e numero de repeticoes.
 
 ## 5. Resultados Medidos
 
-Os graficos e tabelas desta secao devem ser derivados de `results.csv`, gerado
-apos a validacao pelo oraculo. Os arquivos brutos ficam fora do Git por tamanho
-e reprodutibilidade.
+Os graficos e tabelas desta secao foram derivados das 64 linhas de
+`results/final/results.csv`, coletadas apos validacao pelo oraculo. Foram
+avaliadas quatro escalas, quatro valores de theta, duas ordens de insercao e as
+duas estruturas.
 
 ### Escala
 
-Comparar a latencia media conforme o numero de operacoes cresce. A expectativa
-teorica e que a AVL mantenha comportamento logaritmico, enquanto a BST pode
-degradar fortemente em entradas ordenadas.
+A AVL permaneceu entre 106,2 ns e 298,2 ns na configuracao oficial. Em um
+milhao de operacoes, registrou 137,7 ns de media. A BST passou de 301,2 ns em
+mil operacoes para 166.278,6 ns em um milhao, confirmando a degradacao causada
+pela altura linear.
 
 ### P50 e P99
 
-Comparar mediana e cauda. O p99 evidencia picos causados por caminhos longos,
-rotacoes, alocacao, cache e interferencias do sistema operacional.
+Na configuracao oficial com um milhao de operacoes, a AVL obteve P50 de 138 ns
+e P99 de 140 ns. A BST obteve P50 de 166.238 ns e P99 de 166.477 ns. A cauda
+proxima da mediana mostra que a diferenca e estrutural e persistente, nao um
+pico isolado.
 
 ### Theta
 
-Analisar a distribuicao concentrada definida pelo theta `0.99`. Esse valor
-concentra acessos em poucas chaves, mudando a localidade de cache e a pressao
-sobre remocoes e buscas repetidas.
+Os ensaios repetidos com theta em `0.0`, `0.6`, `0.99` e `1.2` mostraram efeito
+secundario diante da ordem de insercao. O enviesamento altera a localidade de
+cache, mas nao corrige a degeneracao da BST ordenada.
 
 ### Ordem de Insercao
 
-Analisar a ordem `sorted`, que e patologica para BST nao balanceada, enquanto a
-AVL deve preservar altura limitada por meio das rotacoes.
+Com `shuffle`, AVL e BST permaneceram na mesma ordem de grandeza. Com `sorted`,
+a BST cresceu ate 166.278,6 ns, enquanto a AVL permaneceu em 137,7 ns. As
+rotacoes preservaram altura logaritmica mesmo sob a entrada patologica.
 
 ### Baseline AVL vs BST
 
-A BST e usada como baseline para evidenciar o custo-beneficio do balanceamento:
-rotacoes adicionam trabalho local, mas evitam crescimento linear da altura.
+A BST evidencia o custo-beneficio do balanceamento: em cargas pequenas ou
+embaralhadas ela pode ser competitiva por nao executar rotacoes. No caso
+oficial de um milhao de operacoes, porem, a AVL foi aproximadamente 1.207 vezes
+mais rapida.
 
 ## 6. Teoria versus Pratica
 
@@ -105,10 +112,10 @@ balanceada pode chegar a `O(n)`. Na pratica, os resultados tambem dependem de
 cache, padrao de acesso, alocacao de objetos, custo das rotacoes e estabilidade
 da JVM durante a medicao.
 
-Quando a matriz oficial for executada, a interpretacao deve confrontar cada
-grafico com essas expectativas. Divergencias devem ser explicadas a partir do
-ambiente, do trace, do aquecimento ou de caracteristicas da implementacao, nunca
-por extrapolacao sem medicao.
+Os resultados confirmam a teoria. O custo local de atualizar metadados e
+rotacionar aparece nas menores escalas, mas permanece limitado. Na BST
+ordenada, cada nova chave percorre uma cadeia crescente; por isso a latencia por
+operacao aumenta junto com o numero de elementos.
 
 ## 7. Alternativas Descartadas
 
