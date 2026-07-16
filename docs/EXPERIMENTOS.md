@@ -15,11 +15,16 @@ Devido ao mecanismo do compilador *Just-In-Time* (JIT) do Java, as primeiras exe
 ## 3. Repetições e Agregação de Percentis
 Para suavizar interferências do Sistema Operacional (Escalonador, Coleta de Lixo ou I/O concorrente no background):
 - O ciclo medido é executado $N$ vezes (default: 10 repetições independentes).
-- As medições em nanossegundos são agrupadas pelo coletor `LatencyStats`.
-- Extraímos **três** medidas críticas para cada caso de teste (dataset x estrutura):
-  - **Média (Mean)**: a latência geral de pico ao longo das baterias.
-  - **P50 (Mediana)**: o valor central, excluindo picos de outliers causados pela CPU / OS.
-  - **P99**: o pior caso probabilístico; indica a latência onde 99% das requisições foram mais rápidas. Crucial para mensurar o limite do sistema sob estresse severo ou longas coletas de Lixo (Garbage Collection).
+- Em cada repetição, o tempo total do trace é dividido pelo número de comandos,
+  produzindo uma média de nanossegundos por operação.
+- As 10 médias por operação são agrupadas pelo coletor `LatencyStats`.
+- Extraímos **três** medidas para cada caso de teste (trace x estrutura):
+  - **Média (Mean)**: média das 10 repetições.
+  - **P50 (Mediana)**: valor central das médias por repetição.
+  - **P99**: percentil por posto mais próximo das médias por repetição. Com
+    apenas 10 amostras, corresponde ao maior valor observado e deve ser
+    interpretado como estabilidade entre repetições, não como percentil de
+    operações individuais.
 
 ## 4. Como Executar os Ensaios
 ### Passo 0: Validação com o Oráculo
@@ -40,12 +45,13 @@ valores estimados.
 Gere o manifesto e os comandos da matriz completa:
 
 ```bash
-python scripts/experiment_matrix.py --keys datasets/face --format sosd --key-bytes 8 --outdir scratch/matrix-face
+python scripts/experiment_matrix.py --keys datasets/face --format sosd --key-bytes 8 --max-load 10000000 --ops 1000,10000,100000,1000000 --thetas 0.0,0.6,0.99,1.2 --orders shuffle,sorted --mix 45:30:25 --seed 14 --warmup 3 --iterations 10 --outdir scratch/matrix-face
 ```
 
-A matriz padrão segue o Grupo 14: quatro ordens de grandeza (`1000`, `10000`,
-`100000`, `1000000` operações), theta `0.99`, mistura `45:30:25`, ordem
-`sorted`, seed `14` e as duas árvores (`avl` e `bst`). O arquivo
+A matriz final cobre quatro escalas (`1000`, `10000`, `100000`, `1000000`
+operacoes), theta `0.0`, `0.6`, `0.99` e `1.2`, mistura `45:30:25`, ordens
+`shuffle` e `sorted`, seed `14` e as duas arvores (`avl` e `bst`). O recorte
+oficial do Grupo 14 usa theta `0.99` e ordem `sorted`. O arquivo
 `scratch/matrix-face/manifest.json` preserva a configuração dos casos e
 `scratch/matrix-face/commands.ps1` contém os comandos reproduzíveis.
 
@@ -69,7 +75,8 @@ Em um ambiente configurado com Python (ou usando o contêiner `dev` através do 
 python scripts/plot_results.py --input relatorio.csv --outdir plots/
 ```
 
-Este script compilará automaticamente comparativos em imagens vetorizadas (`.png`) contendo Bar Charts para Baseline (P99 vs Média) e Line Charts para o comportamento assimptótico ($O(\log n)$) no eixo temporal.
+Este script gera automaticamente comparativos em imagens rasterizadas (`.png`),
+com gráficos de baseline, escala, ordem de inserção, theta e percentis.
 
 ## 5. Relatório
 
