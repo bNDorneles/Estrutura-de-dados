@@ -26,8 +26,7 @@
 ## Relatorio e Defesa
 
 - [x] Relatorio fonte criado em `docs/RELATORIO.md`.
-- [x] Indice de prompts registrado em `docs/PROMPTS.md`.
-- [x] Dump organizado do chat registrado em `docs/CHAT_DUMP.md`.
+- [x] Uso de LLM resumido e organizado em `docs/PROMPTS.md`.
 - [x] Perguntas de defesa preparadas em `docs/DEFESA.md`.
 - [x] CSV com 64 medicoes preservado para auditoria.
 - [x] Video e slides preparados e entregues separadamente pelo grupo.

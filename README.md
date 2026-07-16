@@ -114,7 +114,6 @@ usa 3 ciclos de aquecimento e 10 repeticoes, executados nativamente no Windows
 - [Metodologia experimental](docs/EXPERIMENTOS.md)
 - [Preparacao para defesa](docs/DEFESA.md)
 - [Indice de prompts](docs/PROMPTS.md)
-- [Dump organizado do chat](docs/CHAT_DUMP.md)
 - [Checklist final](docs/ENTREGA_FINAL.md)
 
 O video e os slides da apresentacao oral sao entregues separadamente pelo

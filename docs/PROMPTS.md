@@ -1,8 +1,8 @@
 # Registro de Prompts
 
-Este arquivo funciona como indice das decisoes tomadas com apoio de IA durante
-o projeto. O [dump cronologico completo do chat](CHAT_DUMP.md) preserva os
-prompts do grupo e as respostas finais do assistente utilizados no trabalho.
+Este arquivo resume as principais decisoes tomadas com apoio de IA durante o
+projeto. Os prompts foram agrupados por objetivo para registrar a iteracao sem
+incluir transcricoes extensas ou saidas de terminal.
 
 | Data | Objetivo | Decisao | Arquivos afetados |
 | --- | --- | --- | --- |
@@ -19,6 +19,5 @@ prompts do grupo e as respostas finais do assistente utilizados no trabalho.
 
 Os prompts auxiliaram organizacao, implementacao, experimentacao e revisao. As
 decisoes finais foram revisadas no repositorio por meio de issues, commits e
-pull requests. Saidas extensas de terminal e raciocinio interno da ferramenta
-nao fazem parte do dump; os pedidos do grupo e as respostas finais foram
-preservados para demonstrar a iteracao.
+pull requests. O quadro acima preserva as decisoes relevantes, os objetivos e
+os arquivos afetados de forma adequada para a entrega.

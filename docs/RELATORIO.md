@@ -88,6 +88,24 @@ milhao de operacoes, registrou 137,7 ns de media. A BST passou de 301,2 ns em
 mil operacoes para 166.278,6 ns em um milhao, confirmando a degradacao causada
 pela altura linear.
 
+### Ponto de Cruzamento
+
+O recorte oficial evidencia quando o custo do desbalanceamento passa a dominar
+o custo adicional das rotacoes:
+
+| Operacoes | AVL (ns) | BST (ns) | Razao BST/AVL |
+| ---: | ---: | ---: | ---: |
+| 1.000 | 298,2 | 301,2 | 1,01 vezes |
+| 10.000 | 135,5 | 1.313,0 | 9,69 vezes |
+| 100.000 | 106,2 | 14.971,4 | 140,97 vezes |
+| 1.000.000 | 137,7 | 166.278,6 | 1.207,54 vezes |
+
+Com mil operacoes, as estruturas ficaram praticamente empatadas. A partir de
+10 mil operacoes, a vantagem da AVL tornou-se clara e cresceu rapidamente com
+a escala. Em `shuffle`, por outro lado, a BST foi aproximadamente 1,5 a 1,8
+vezes mais rapida, mostrando o custo constante do balanceamento quando a
+entrada nao produz uma arvore patologica.
+
 ### P50 e P99
 
 Na configuracao oficial com um milhao de operacoes, a AVL obteve P50 de 138 ns
@@ -127,6 +145,15 @@ Os resultados confirmam a teoria. O custo local de atualizar metadados e
 rotacionar aparece nas menores escalas, mas permanece limitado. Na BST
 ordenada, cada nova chave percorre uma cadeia crescente; por isso a latencia por
 operacao aumenta junto com o numero de elementos.
+
+Na implementacao avaliada, insercao e remocao da AVL percorrem a arvore
+recursivamente e, no retorno, recalculam `height` e `subtreeSize`, verificam o
+fator de balanceamento e executam rotacoes quando necessario. A BST usa
+percursos iterativos e nao mantem esses metadados, o que explica sua vantagem
+constante nos traces embaralhados. Esse custo adicional da AVL compra a
+garantia de altura logaritmica: construir uma BST degenerada com uma sequencia
+de insercoes ordenadas pode acumular custo `O(n^2)`, enquanto a AVL mantem custo
+acumulado `O(n log n)` para as insercoes.
 
 ## 7. Alternativas Descartadas
 
