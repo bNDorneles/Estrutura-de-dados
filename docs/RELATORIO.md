@@ -171,7 +171,7 @@ Responsaveis:
 
 - `bNDorneles`: nucleo AVL, invariantes, integracao e justificativa tecnica;
 - `gustavodanjos`: trace, baseline BST, benchmark, CSV e graficos;
-- ambos: matriz experimental, interpretacao, relatorio e defesa.
+- ambos: matriz experimental, interpretacao, relatorio e apresentacao final.
 
 Ferramentas:
 

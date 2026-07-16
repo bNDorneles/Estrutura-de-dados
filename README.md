@@ -122,4 +122,4 @@ grupo e, por isso, nao sao versionados neste repositorio.
 
 - `bNDorneles`: nucleo AVL, invariantes, integracao e justificativa tecnica.
 - `gustavodanjos`: trace, baseline BST, benchmark, CSV e graficos.
-- Ambos: experimentos, interpretacao, relatorio e defesa.
+- Ambos: experimentos, interpretacao, relatorio e apresentacao final.
