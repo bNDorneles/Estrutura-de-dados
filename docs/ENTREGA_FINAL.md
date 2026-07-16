@@ -26,18 +26,21 @@
 ## Relatorio e Defesa
 
 - [x] Relatorio fonte criado em `docs/RELATORIO.md`.
-- [x] Prompts registrados em `docs/PROMPTS.md`.
-- [x] PowerPoint e roteiros criados em `presentation/`.
+- [x] Uso de LLM resumido e organizado em `docs/PROMPTS.md`.
 - [x] Perguntas de defesa preparadas em `docs/DEFESA.md`.
-- [x] Graficos oficiais inseridos na apresentacao.
 - [x] CSV com 64 medicoes preservado para auditoria.
+- [x] Video e slides preparados e entregues separadamente pelo grupo.
 
 ## Verificacao
 
-Registrar antes da entrega:
+Comandos executados na preparacao da entrega:
 
 ```powershell
 $env:JAVA_HOME='C:\Users\bNd\AppData\Local\Programs\DataGrip\jbr'
 .\mvnw.cmd clean test package
 python -m unittest discover scripts
 ```
+
+Resultado em 15/07/2026: 48 testes Java e 12 testes Python aprovados, sem
+falhas. O pacote `target/augmented-avl-1.0.0-SNAPSHOT.jar` foi gerado com
+sucesso.

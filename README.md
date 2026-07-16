@@ -10,12 +10,12 @@ em tempo logaritmico.
 Na configuracao oficial do Grupo 14 (`face`, theta `0.99`, mix `45:30:25`,
 ordem `sorted`, seed `14`), a AVL manteve latencia media de **137,7 ns** em um
 milhao de operacoes. A BST nao balanceada atingiu **166.278,6 ns**: a AVL foi
-aproximadamente **1.207 vezes mais rapida** no caso patologico.
+aproximadamente **1.207,5 vezes mais rapida** no caso patologico.
 
 ![Comparacao oficial do Grupo 14](results/final/plots/group14_official.png)
 
-As 64 medicoes reais e os seis graficos utilizados no relatorio e na
-apresentacao estao em [results/final](results/final/).
+As 64 medicoes reais e os seis graficos utilizados na analise estao em
+[results/final](results/final/).
 
 ## Operacoes
 
@@ -54,6 +54,13 @@ Detalhes: [arquitetura](docs/ARQUITETURA.md) e
 
 Requisitos: JDK 17 ou superior e Python 3 com as dependencias de
 `requirements-dev.txt`.
+
+Clone o repositorio e entre na pasta do projeto:
+
+```powershell
+git clone https://github.com/bNDorneles/Estrutura-de-dados.git
+cd Estrutura-de-dados
+```
 
 No Windows:
 
@@ -102,14 +109,15 @@ usa 3 ciclos de aquecimento e 10 repeticoes, executados nativamente no Windows
 ## Entrega
 
 - [Resultados finais](results/final/)
-- [Apresentacao PowerPoint](presentation/Grupo14-AVL-Aumentada.pptx)
-- [Roteiro dos slides](presentation/ROTEIRO_SLIDES.md)
-- [Roteiro oral](presentation/ROTEIRO_APRESENTACAO.md)
 - [Relatorio tecnico](docs/RELATORIO.md)
+- [Arquitetura e invariantes](docs/ARQUITETURA.md)
 - [Metodologia experimental](docs/EXPERIMENTOS.md)
 - [Preparacao para defesa](docs/DEFESA.md)
-- [Registro de prompts](docs/PROMPTS.md)
+- [Indice de prompts](docs/PROMPTS.md)
 - [Checklist final](docs/ENTREGA_FINAL.md)
+
+O video e os slides da apresentacao oral sao entregues separadamente pelo
+grupo e, por isso, nao sao versionados neste repositorio.
 
 ## Autoria
 

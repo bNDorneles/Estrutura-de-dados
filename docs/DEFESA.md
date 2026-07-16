@@ -19,9 +19,11 @@ Se a ordem for invertida, altura e `subtreeSize` podem ficar inconsistentes.
 
 **Pergunta:** Por que medir p99 alem da media?
 
-**Resposta:** A media esconde caudas longas. O p99 mostra a latencia abaixo da
-qual 99% das execucoes ficaram, evidenciando picos de custo por caminhos mais
-longos, cache, alocacao ou pausas do sistema.
+**Resposta:** A media pode esconder variacao entre repeticoes. Neste benchmark,
+P50 e P99 sao calculados sobre as medias por operacao das 10 repeticoes, e nao
+sobre cada operacao isolada. Com 10 amostras e o estimador por posto mais
+proximo, o P99 e o maior valor observado; ele ajuda a mostrar estabilidade,
+mas nao deve ser apresentado como percentil de requisicoes individuais.
 
 ## Theta
 

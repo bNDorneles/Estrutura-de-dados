@@ -33,4 +33,5 @@ osm_cellids_800M_uint64
 # Arquivos temporários
 tmp/
 .worktrees/
+presentation/
 *.log
