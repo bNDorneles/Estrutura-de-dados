@@ -23,11 +23,10 @@
 - [x] Matriz cobre AVL e BST.
 - [x] Timeout e falta de memoria devem ser registrados como falha, nao estimados.
 
-## Relatorio e Defesa
+## Relatorio e Entrega
 
 - [x] Relatorio fonte criado em `docs/RELATORIO.md`.
 - [x] Uso de LLM resumido e organizado em `docs/PROMPTS.md`.
-- [x] Perguntas de defesa preparadas em `docs/DEFESA.md`.
 - [x] CSV com 64 medicoes preservado para auditoria.
 - [x] Video e slides preparados e entregues separadamente pelo grupo.
 

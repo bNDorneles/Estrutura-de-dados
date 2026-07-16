@@ -112,7 +112,6 @@ usa 3 ciclos de aquecimento e 10 repeticoes, executados nativamente no Windows
 - [Relatorio tecnico](docs/RELATORIO.md)
 - [Arquitetura e invariantes](docs/ARQUITETURA.md)
 - [Metodologia experimental](docs/EXPERIMENTOS.md)
-- [Preparacao para defesa](docs/DEFESA.md)
 - [Indice de prompts](docs/PROMPTS.md)
 - [Checklist final](docs/ENTREGA_FINAL.md)
 
