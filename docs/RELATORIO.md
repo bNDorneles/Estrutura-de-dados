@@ -70,9 +70,26 @@ no Docker, para evitar interferencia da virtualizacao. O ambiente registrado
 deve incluir sistema operacional, versao da JVM, memoria disponivel, aquecimento
 e numero de repeticoes.
 
-As medicoes finais foram executadas no Windows 11, com um AMD Ryzen 5 3600 de
-6 nucleos e 12 processadores logicos, 16 GB de RAM e JVM 21.0.9. Cada caso usou
-3 ciclos de aquecimento e 10 repeticoes medidas.
+### 4.1 Ambiente de Execucao
+
+As medicoes finais foram executadas nativamente na maquina do grupo, com a
+seguinte configuracao:
+
+| Componente | Configuracao |
+| --- | --- |
+| Processador | AMD Ryzen 5 3600, 6 nucleos e 12 processadores logicos |
+| Memoria fisica | 16 GB de RAM |
+| Sistema operacional | Microsoft Windows 11 Pro, arquitetura AMD64 |
+| JVM do benchmark | OpenJDK 21.0.9, JetBrains Runtime |
+| Maven | Apache Maven Wrapper 3.9.16 |
+| Heap maximo registrado | 4.078 MB, conforme `results/final/results.csv` |
+| Dataset | SOSD `face`, com limite de carregamento de 10.000.000 de chaves |
+| Protocolo | 3 ciclos de aquecimento e 10 repeticoes por caso |
+
+Os scripts de preparacao, analise e geracao dos graficos foram executados com
+Python 3.14.2, NumPy 2.4.4, pandas 3.0.1 e Matplotlib 3.10.9. Essas ferramentas
+nao participam da regiao cronometrada: o benchmark Java carrega o trace antes
+de iniciar a medicao e registra os tempos com `System.nanoTime()`.
 
 ## 5. Resultados Medidos
 
