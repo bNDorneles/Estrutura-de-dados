@@ -1,0 +1,13 @@
+services:
+  dev:
+    build:
+      context: .
+    working_dir: /workspace
+    volumes:
+      - .:/workspace
+      - maven-cache:/root/.m2
+    stdin_open: true
+    tty: true
+
+volumes:
+  maven-cache:

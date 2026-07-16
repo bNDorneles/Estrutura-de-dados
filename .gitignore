@@ -1,0 +1,37 @@
+# Java e Maven
+target/
+*.class
+
+# IDEs e sistema operacional
+.idea/
+.vscode/
+*.iml
+.DS_Store
+Thumbs.db
+
+# Ambientes Python usados apenas pelos scripts auxiliares
+.venv/
+venv/
+env/
+__pycache__/
+*.pyc
+
+# Cargas e saídas grandes geradas localmente
+scratch/
+*.trace
+*.expected
+*.out
+*.csv
+!results/final/results.csv
+data/
+datasets/
+books_200M_uint32
+fb_200M_uint64
+wiki_ts_200M_uint64
+osm_cellids_800M_uint64
+
+# Arquivos temporários
+tmp/
+.worktrees/
+presentation/
+*.log
